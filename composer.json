@@ -1,0 +1,13 @@
+{
+    "require": {
+        "php-yaoi/php-yaoi": "dev-master",
+        "mishak/archive-tar": "dev-master"
+    },
+    "autoload": {
+        "psr-4": {
+            "Phperf\\Xhprof\\": "src/"
+        }
+    },
+    "minimum-stability" : "dev",
+    "prefer-stable" : true
+}

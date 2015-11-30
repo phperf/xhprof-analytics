@@ -1,0 +1,118 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "This file is @generated automatically"
+    ],
+    "hash": "9338a8e0bc87611069dbd8dba35046f5",
+    "content-hash": "7f7fb30dfed094f0ac97c8233eca8afa",
+    "packages": [
+        {
+            "name": "mishak/archive-tar",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/mishak87/archive-tar.git",
+                "reference": "8a7e919429a8a7fa0f5956a0d845315fca54344b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/mishak87/archive-tar/zipball/8a7e919429a8a7fa0f5956a0d845315fca54344b",
+                "reference": "8a7e919429a8a7fa0f5956a0d845315fca54344b",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Mishak\\ArchiveTar": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause",
+                "GPL-2.0",
+                "GPL-3.0"
+            ],
+            "authors": [
+                {
+                    "name": "Michal Gebauer",
+                    "email": "mishak@mishak.net",
+                    "homepage": "https://mishak.net",
+                    "role": "developer"
+                }
+            ],
+            "description": "Archive TAR reader for PHP - supports gz, bz2 and files over 2 GB",
+            "keywords": [
+                "archive",
+                "reader",
+                "tar"
+            ],
+            "time": "2013-09-27 15:32:40"
+        },
+        {
+            "name": "php-yaoi/php-yaoi",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/php-yaoi/php-yaoi.git",
+                "reference": "3d3f59361e86456d246ed2a0ba8dc823fb4c020d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/php-yaoi/php-yaoi/zipball/3d3f59361e86456d246ed2a0ba8dc823fb4c020d",
+                "reference": "3d3f59361e86456d246ed2a0ba8dc823fb4c020d",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "require-dev": {
+                "codeclimate/php-test-reporter": "dev-master",
+                "phpunit/phpunit": "~4.0",
+                "psr/log": "~1.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Yaoi\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Viacheslav Poturaev",
+                    "email": "vearutop@gmail.com",
+                    "homepage": "https://github.com/vearutop"
+                }
+            ],
+            "description": "Yaoi is yet another object interleaver",
+            "homepage": "https://github.com/php-yaoi/php-yaoi",
+            "keywords": [
+                "framework"
+            ],
+            "time": "2015-11-26 19:03:15"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "dev",
+    "stability-flags": {
+        "php-yaoi/php-yaoi": 20,
+        "mishak/archive-tar": 20
+    },
+    "prefer-stable": true,
+    "prefer-lowest": false,
+    "platform": [],
+    "platform-dev": []
+}
