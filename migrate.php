@@ -4,7 +4,6 @@ namespace Phperf\Xhprof;
 
 use Yaoi\Log;
 
-\xhprof_enable(XHPROF_FLAGS_CPU + XHPROF_FLAGS_MEMORY);
 
 require_once __DIR__ . '/vendor/autoload.php';
 require_once __DIR__ . '/env/conf.php';
@@ -24,4 +23,3 @@ foreach ($tables as $table) {
     $table->migration()->setLog($log)->apply();
 }
 
-file_put_contents('migration.serialized', serialize(\xhprof_disable()));

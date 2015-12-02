@@ -76,7 +76,11 @@ class Import extends Command
             }
 
 
+            //xhprof_enable();
             $this->addRun($xhprofData, $run);
+            //$data = xhprof_disable();
+            //$xhFilename = '/tmp/xhprof/import' . '_' . microtime(1) . '.serialized';
+            //file_put_contents($xhFilename, serialize($data));
         } catch (Exception $exception) {
             Console::getInstance()->eol();
             print_r($this->lastSample);
@@ -96,9 +100,7 @@ class Import extends Command
 
         if (StringValue::create($this->path)->ends('.tar.gz')) {
             $filename = $this->path;
-            require_once __DIR__ . '/../../vendor/mishak/archive-tar/Reader.php';
             $reader = new Reader($filename);
-            //$reader = new \Mishak\ArchiveTar\Reader($filename);
             $reader->setReadContents(false);
             $reader->setBuffer(1000000);
             $count = 0;

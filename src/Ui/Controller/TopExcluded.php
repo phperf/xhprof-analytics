@@ -3,12 +3,13 @@
 namespace Phperf\Xhprof\Ui\Controller;
 
 
+use Phperf\Xhprof\Ui\Controller\Ancestor;
 use Phperf\Xhprof\SymbolStat;
 use Phperf\Xhprof\Symbol;
 use Yaoi\Database;
 use Yaoi\View\Table\HTML;
 
-class TopExcluded extends BasicFilter
+class TopExcluded extends Ancestor
 {
     public function listTop()
     {

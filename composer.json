@@ -1,7 +1,13 @@
 {
+    "repositories": [
+        {
+            "url": "https://github.com/vearutop/archive-tar.git",
+            "type": "git"
+        }
+    ],
     "require": {
         "php-yaoi/php-yaoi": "dev-master",
-        "mishak/archive-tar": "dev-master"
+        "vearutop/archive-tar": "dev-master"
     },
     "autoload": {
         "psr-4": {

@@ -4,6 +4,7 @@ namespace Phperf\Xhprof\Ui\Controller;
 
 
 
+use Phperf\Xhprof\Ui\Controller\Ancestor;
 use Phperf\Xhprof\SymbolStat;
 use Phperf\Xhprof\RelatedStat;
 use Phperf\Xhprof\Run;
@@ -13,7 +14,7 @@ use Yaoi\View\Raw;
 use Yaoi\View\Stack;
 use Yaoi\View\Table\HTML;
 
-class SymbolInfo extends BasicFilter
+class SymbolInfo extends Ancestor
 {
     public function showSymbol() {
 
@@ -21,7 +22,7 @@ class SymbolInfo extends BasicFilter
             $run = new Run();
             $run->name = $_GET['run'];
             $run->find()->id;
-            $this->runId = $run->find()->id;
+            $this->runName = $run->find()->id;
         }
 
         /** @var Symbol $symbol */
@@ -52,7 +53,7 @@ class SymbolInfo extends BasicFilter
                 $inc->parentSymbolId, Symbol::columns()->name)
             ->leftJoin('? ON ? = ?', Symbol::table(), Symbol::columns()->id, $inc->parentSymbolId)
             ->where('? = ?', $inc->childSymbolId, $symbol->id)
-            ->where('? = ?', $inc->runId, $this->runId)
+            //->where('? = ?', $inc->runId, $this->runId)
             ->groupBy($inc->parentSymbolId)
             ->order('total_wt DESC')
             ->limit(50);
@@ -79,7 +80,7 @@ class SymbolInfo extends BasicFilter
                 $inc->childSymbolId, Symbol::columns()->name)
             ->leftJoin('? ON ? = ?', Symbol::table(), Symbol::columns()->id, $inc->childSymbolId)
             ->where('? = ?', $inc->parentSymbolId, $symbol->id)
-            ->where('? = ?', $inc->runId, $this->runId)
+            //->where('? = ?', $inc->runId, $this->runId)
             ->groupBy($inc->childSymbolId)
             ->order('total_wt DESC')
             ->limit(50);

@@ -1,3 +1,3 @@
-mysql -u root -e "DROP DATABASE xhprof_stat2;CREATE DATABASE xhprof_stat2;"; php migrate.php
+mysql -u root -e "DROP DATABASE IF EXISTS xhprof_stat3;CREATE DATABASE xhprof_stat3;"; php migrate.php
 
 

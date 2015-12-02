@@ -3,11 +3,12 @@
 namespace Phperf\Xhprof\Ui\Controller;
 
 
+use Phperf\Xhprof\Ui\Controller\Ancestor;
 use Yaoi\Database;
 use Yaoi\View\Table\HTML;
 use Yaoi\View\Table\JIRA;
 
-class Compare extends BasicFilter
+class Compare extends Ancestor
 {
     public static function compare($run1Name, $run2Name, $inclusive) {
         $res = Database::getInstance()->query("select * from (select coalesce(run1.name, run2.name) as 'function',
