@@ -9,7 +9,7 @@ use Phperf\Xhprof\RelatedStat;
 use Phperf\Xhprof\Run;
 use Phperf\Xhprof\Symbol;
 use Phperf\Xhprof\SymbolStat;
-use Yaoi\Cli\Command;
+use Yaoi\Command;
 use Yaoi\Cli\Console;
 use Yaoi\Cli\Option;
 use Yaoi\Command\Definition;
@@ -48,12 +48,12 @@ class Import extends Command
 
 
             ++$this->index;
-            Console::getInstance()->returnCaret()->printF('?% ? ?',
-                round(100 * ($this->index / $this->count)), $this->index, $filename);
+            Console::getInstance()->returnCaret()->printF(new Expression('?% ? ?',
+                round(100 * ($this->index / $this->count)), $this->index, $filename));
 
             $xhprofData = unserialize($content);
             if (!is_array($xhprofData)) {
-                $this->error("Can not unserialize ?", $filename);
+                $this->runner->error(new Expression("Can not unserialize ?", $filename));
                 return;
             }
 
@@ -85,15 +85,15 @@ class Import extends Command
             Console::getInstance()->eol();
             print_r($this->lastSample);
             Console::getInstance()->printLine($exception->query);
-            $this->error($exception->getMessage());
+            $this->runner->error($exception->getMessage());
         }
 
     }
 
-    protected function performAction()
+    public function performAction()
     {
         if (!file_exists($this->path)) {
-            $this->error('Path ? not found', $this->path);
+            $this->runner->error(new Expression('Path ? not found', $this->path));
             return;
         }
 

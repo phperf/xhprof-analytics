@@ -2,3 +2,4 @@ vendor
 .idea
 env/conf.php
 public/nginx-error.log
+xh-stat.sqlite

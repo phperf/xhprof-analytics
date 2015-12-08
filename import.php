@@ -2,9 +2,9 @@
 
 namespace Phperf\Xhprof;
 
-use Phperf\Xhprof\Cli\Import;
+use Yaoi\Cli\Runner;
 use Yaoi\Request;
 
 require_once __DIR__ . '/vendor/autoload.php';
 require_once __DIR__ . '/env/conf.php';
-Cli\Import::create()->init()->run();
+Runner::create(new Cli\Import)->init()->run();

@@ -13,12 +13,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-yaoi/php-yaoi.git",
-                "reference": "ac0584f298ae13493f7b8671b911da3d5821532d"
+                "reference": "5d26a916bac037b70b05fb58c7a1857e0cd64b2b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-yaoi/php-yaoi/zipball/ac0584f298ae13493f7b8671b911da3d5821532d",
-                "reference": "ac0584f298ae13493f7b8671b911da3d5821532d",
+                "url": "https://api.github.com/repos/php-yaoi/php-yaoi/zipball/5d26a916bac037b70b05fb58c7a1857e0cd64b2b",
+                "reference": "5d26a916bac037b70b05fb58c7a1857e0cd64b2b",
                 "shasum": ""
             },
             "require": {
@@ -56,7 +56,7 @@
             "keywords": [
                 "framework"
             ],
-            "time": "2015-12-02 16:44:18"
+            "time": "2015-12-07 20:50:20"
         },
         {
             "name": "vearutop/archive-tar",
