@@ -1,20 +1,20 @@
 <?php
 
-namespace Phperf\Xhprof\Ui\Controller;
+namespace Phperf\Xhprof\Html\Controller;
 
 
 
-use Phperf\Xhprof\Ui\Controller\Ancestor;
-use Phperf\Xhprof\SymbolStat;
-use Phperf\Xhprof\RelatedStat;
-use Phperf\Xhprof\Run;
-use Phperf\Xhprof\Symbol;
+use Phperf\Xhprof\Command\Compare;
+use Phperf\Xhprof\Entity\SymbolStat;
+use Phperf\Xhprof\Entity\RelatedStat;
+use Phperf\Xhprof\Entity\Run;
+use Phperf\Xhprof\Entity\Symbol;
 use Yaoi\Database;
 use Yaoi\View\Raw;
 use Yaoi\View\Stack;
 use Yaoi\View\Table\HTML;
 
-class SymbolInfo extends Ancestor
+class SymbolInfo extends Compare
 {
     public function showSymbol() {
 
@@ -99,7 +99,7 @@ class SymbolInfo extends Ancestor
         }
 
 
-        $this->layout->setTitle($symbol->name)->setMain($stack)->render();
+        $this->layout->setTitle($symbol->name)->pushMain($stack)->render();
 
     }
 }

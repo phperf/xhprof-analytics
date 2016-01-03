@@ -2,6 +2,9 @@
 
 namespace Phperf\Xhprof;
 
+use Phperf\Xhprof\Entity\Run;
+use Phperf\Xhprof\Entity\Symbol;
+use Phperf\Xhprof\Entity\SymbolStat;
 use Yaoi\BaseClass;
 use Yaoi\Database;
 use Yaoi\Log;

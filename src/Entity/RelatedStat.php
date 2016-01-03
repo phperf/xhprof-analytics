@@ -1,6 +1,6 @@
 <?php
 
-namespace Phperf\Xhprof;
+namespace Phperf\Xhprof\Entity;
 
 use Yaoi\Database\Entity;
 
@@ -21,6 +21,7 @@ class RelatedStat extends Stat
 
     static function setUpTable(\Yaoi\Database\Definition\Table $table, $columns)
     {
+        $table->setSchemaName('phperf_xhprof_related_stat');
         $table->setPrimaryKey($columns->parentSymbolId, $columns->childSymbolId, $columns->runId);
     }
 

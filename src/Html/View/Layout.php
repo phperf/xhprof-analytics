@@ -1,10 +1,11 @@
 <?php
 
-namespace Phperf\Xhprof\Ui\View;
+namespace Phperf\Xhprof\Html\View;
 
 
 use Yaoi\View\Hardcoded;
 use Yaoi\View\Renderer;
+use Yaoi\View\Stack;
 
 class Layout extends Hardcoded
 {
@@ -20,11 +21,16 @@ class Layout extends Hardcoded
         return $this;
     }
 
-    /** @var  Renderer  */
+    public function __construct()
+    {
+        $this->main = new Stack();
+    }
+
+    /** @var Stack  */
     private $main;
 
-    public function setMain(Renderer $main) {
-        $this->main = $main;
+    public function pushMain(Renderer $block) {
+        $this->main->push($block);
         return $this;
     }
 

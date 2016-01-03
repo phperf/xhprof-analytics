@@ -1,6 +1,6 @@
 <?php
 
-namespace Phperf\Xhprof;
+namespace Phperf\Xhprof\Entity;
 
 use Yaoi\Database\Definition\Column;
 use Yaoi\Database\Entity;
@@ -12,6 +12,7 @@ abstract class Stat extends Entity
     public $memoryUsage = 0;
     public $peakMemoryUsage = 0;
     public $cpu = 0;
+    public $runs = 1;
 
     static function setUpColumns($columns)
     {
@@ -20,6 +21,8 @@ abstract class Stat extends Entity
         $columns->memoryUsage = Column::create(Column::INTEGER + Column::NOT_NULL)->setDefault(0);
         $columns->peakMemoryUsage = Column::create(Column::INTEGER + Column::NOT_NULL)->setDefault(0);
         $columns->cpu = Column::create(Column::INTEGER + Column::NOT_NULL)->setDefault(0);
+        $columns->runs = Column::create(Column::INTEGER + Column::NOT_NULL)->setDefault(0);
+
     }
 
     public function importFromXhData(array $data) {
@@ -32,6 +35,8 @@ abstract class Stat extends Entity
 
 
     public function addXhSample($data, $addTime = true) {
+        $this->runs++;
+
         $this->count += $data['ct'];
         if ($addTime) {
             $this->wallTime += $data['wt'];

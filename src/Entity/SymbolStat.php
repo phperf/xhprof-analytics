@@ -1,7 +1,6 @@
 <?php
 
-namespace Phperf\Xhprof;
-
+namespace Phperf\Xhprof\Entity;
 
 use Yaoi\Database\Definition\Column;
 use Yaoi\Database\Entity;
@@ -22,6 +21,7 @@ class SymbolStat extends Stat
 
     static function setUpTable(\Yaoi\Database\Definition\Table $table, $columns)
     {
+        $table->setSchemaName('phperf_xhprof_symbol_stat');
         $table->setPrimaryKey($columns->symbolId, $columns->runId, $columns->isInclusive);
     }
 

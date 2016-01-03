@@ -2,6 +2,10 @@
 
 namespace Phperf\Xhprof;
 
+use Phperf\Xhprof\Entity\RelatedStat;
+use Phperf\Xhprof\Entity\Run;
+use Phperf\Xhprof\Entity\Symbol;
+use Phperf\Xhprof\Entity\SymbolStat;
 use Yaoi\Log;
 
 
@@ -14,7 +18,6 @@ $tables = array(
     Run::table(),
     RelatedStat::table(),
     SymbolStat::table(),
-    Group::table(),
 );
 
 $log = new Log('colored-stdout');

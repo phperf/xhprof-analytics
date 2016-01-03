@@ -1,15 +1,15 @@
 <?php
 
-namespace Phperf\Xhprof\Ui\Controller;
+namespace Phperf\Xhprof\Html\Controller;
 
 
-use Phperf\Xhprof\Ui\Controller\Ancestor;
-use Phperf\Xhprof\SymbolStat;
-use Phperf\Xhprof\Symbol;
+use Phperf\Xhprof\Command\Compare;
+use Phperf\Xhprof\Entity\SymbolStat;
+use Phperf\Xhprof\Entity\Symbol;
 use Yaoi\Database;
 use Yaoi\View\Table\HTML;
 
-class TopExcluded extends Ancestor
+class TopExcluded extends Compare
 {
     public function listTop()
     {
@@ -37,7 +37,7 @@ class TopExcluded extends Ancestor
         }
 
 
-        $this->layout->setMain($table)->render();
+        $this->layout->pushMain($table)->render();
     }
 
 }

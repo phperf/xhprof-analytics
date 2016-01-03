@@ -3,9 +3,9 @@
 
 namespace Phperf\Xhprof;
 
-use Phperf\Xhprof\Ui\Controller\Compare;
-use Phperf\Xhprof\Ui\Controller\SymbolInfo;
-use Phperf\Xhprof\Ui\Controller\TopExcluded;
+use Phperf\Xhprof\Command\View\Compare;
+use Phperf\Xhprof\Html\Controller\SymbolInfo;
+use Phperf\Xhprof\Html\Controller\TopExcluded;
 use Yaoi\Database;
 use Yaoi\View\Table\HTML;
 

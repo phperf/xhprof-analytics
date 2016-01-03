@@ -2,13 +2,12 @@
 
 namespace Phperf\Xhprof\Cli;
 
-
 use Mishak\ArchiveTar\Reader;
 use Phperf\Xhprof\BatchSaver;
-use Phperf\Xhprof\RelatedStat;
-use Phperf\Xhprof\Run;
-use Phperf\Xhprof\Symbol;
-use Phperf\Xhprof\SymbolStat;
+use Phperf\Xhprof\Entity\RelatedStat;
+use Phperf\Xhprof\Entity\Run;
+use Phperf\Xhprof\Entity\Symbol;
+use Phperf\Xhprof\Entity\SymbolStat;
 use Yaoi\Command;
 use Yaoi\Cli\Console;
 use Yaoi\Cli\Option;
@@ -53,7 +52,7 @@ class Import extends Command
 
             $xhprofData = unserialize($content);
             if (!is_array($xhprofData)) {
-                $this->runner->error(new Expression("Can not unserialize ?", $filename));
+                $this->response->error(new Expression("Can not unserialize ?", $filename));
                 return;
             }
 
@@ -67,7 +66,6 @@ class Import extends Command
                 $run = new Run();
                 $run->name = $filename;
                 $run->ut = $ut;
-                $run->parentId = $this->groupRun->id;
             }
 
             if ($run->find() && !$this->squash) {
@@ -85,7 +83,7 @@ class Import extends Command
             Console::getInstance()->eol();
             print_r($this->lastSample);
             Console::getInstance()->printLine($exception->query);
-            $this->runner->error($exception->getMessage());
+            $this->response->error($exception->getMessage());
         }
 
     }
@@ -93,7 +91,7 @@ class Import extends Command
     public function performAction()
     {
         if (!file_exists($this->path)) {
-            $this->runner->error(new Expression('Path ? not found', $this->path));
+            $this->response->error(new Expression('Path ? not found', $this->path));
             return;
         }
 
