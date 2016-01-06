@@ -3,10 +3,12 @@
 namespace Phperf\Xhprof\Command;
 
 use Phperf\Xhprof\Html\View\Layout;
+use Yaoi\Command;
 use Yaoi\Command\Definition;
 use Yaoi\Command\Option;
 use Yaoi\Database;
 use Yaoi\DependencyRepository;
+use Yaoi\Io\Content\Heading;
 use Yaoi\Io\Content\Rows;
 use Yaoi\Io\Request;
 use Yaoi\Log;
@@ -14,13 +16,8 @@ use Yaoi\String\Expression;
 use Yaoi\Undefined;
 use Yaoi\View\Raw;
 
-class Compare extends \Yaoi\Command
+class Compare extends BaseFilter
 {
-    public $run;
-    public $symbol;
-    public $isInclusive = 0;
-    public $limit = 50;
-    public $minWtPercent;
 
     /** @var  Layout */
     protected $layout;
@@ -98,25 +95,13 @@ class Compare extends \Yaoi\Command
         DependencyRepository::delete($this->requestRef);
     }
 
-
-    static function setUpDefinition(Definition $definition, $options)
+    static function setUpDefinition(Command\Definition $definition, $options)
     {
-        $options->run = \Yaoi\Cli\Option::create()
-            ->setIsUnnamed()
-            ->setIsRequired()
-            ->setDescription('Run name')
-            ->setShortName('r')
-            ->setType()
+        parent::setUpDefinition($definition, $options);
+        $options->run = Option::cast($options->run)
             ->setIsVariadic();
-        $options->symbol = Option::create()->setDescription('Function name')->setType();
-        $options->isInclusive = Option::create()->setDescription('Show inclusive stats');
-        $options->limit = Option::create()->setType()->setDescription('Limit number of rows');
-
-
-        $definition->description = 'Compare runs';
-        $definition->version = 'v0.1';
-        $definition->name = 'compare';
     }
+
 
     public function performAction()
     {
@@ -127,12 +112,33 @@ class Compare extends \Yaoi\Command
         }
 
         $expr = \Phperf\Xhprof\Query\Compare::create();
+        if (!$this->limit instanceof Undefined) {
+            $expr->limit = $this->limit;
+        }
+
         $expr->isInclusive = $this->isInclusive;
         foreach ($this->run as $runName) {
             $expr->addRun($runName);
         }
         //echo $expr->build(), PHP_EOL;
-        $res = $expr->build()->query();
-        $this->response->addContent(new Rows($res));
+        if ($this->symbol instanceof Undefined) {
+            $res = $expr->build($expr->topSymbolsExpr())->query();
+            $this->response->addContent(new Rows($res));
+        }
+        else {
+            $expr->setSymbol($this->symbol);
+
+            $this->response->addContent(new Heading($this->symbol));
+            $res = $expr->build($expr->topSymbolsExpr())->query();
+            $this->response->addContent(new Rows($res));
+
+            $this->response->addContent(new Heading('Parents'));
+            $res = $expr->build($expr->topParentsExpr())->query();
+            $this->response->addContent(new Rows($res));
+
+            $this->response->addContent(new Heading('Children'));
+            $res = $expr->build($expr->topChildrenExpr())->query();
+            $this->response->addContent(new Rows($res));
+        }
     }
 }

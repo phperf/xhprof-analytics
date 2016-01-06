@@ -68,7 +68,7 @@ class Import extends Command
                 $run->ut = $ut;
             }
 
-            if ($run->find() && !$this->squash) {
+            if ($run->findSaved() && !$this->squash) {
                 Console::getInstance()->printLine(" already imported");
                 return;
             }

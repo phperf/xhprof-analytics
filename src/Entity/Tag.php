@@ -36,7 +36,7 @@ class Tag extends Entity
      */
     static function setUpTable(\Yaoi\Database\Definition\Table $table, $columns)
     {
-        $table->setSchemaName('phperf_xhprof_symbol');
+        $table->setSchemaName('phperf_xhprof_tag');
         $table->addIndex(Index::TYPE_UNIQUE, $columns->projectId, $columns->text);
     }
 

@@ -21,8 +21,8 @@ class SymbolInfo extends Compare
         if (!empty($_GET['run'])) {
             $run = new Run();
             $run->name = $_GET['run'];
-            $run->find()->id;
-            $this->runName = $run->find()->id;
+            $run->findSaved()->id;
+            $this->runName = $run->findSaved()->id;
         }
 
         /** @var Symbol $symbol */

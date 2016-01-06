@@ -7,7 +7,8 @@
     ],
     "require": {
         "php-yaoi/php-yaoi": "dev-master",
-        "vearutop/archive-tar": "dev-master"
+        "vearutop/archive-tar": "dev-master",
+        "twbs/bootstrap": "^3.3"
     },
     "autoload": {
         "psr-4": {
@@ -15,5 +16,8 @@
         }
     },
     "minimum-stability" : "dev",
-    "prefer-stable" : true
+    "prefer-stable" : true,
+    "require-dev": {
+        "phpunit/phpunit": "^5.1"
+    }
 }

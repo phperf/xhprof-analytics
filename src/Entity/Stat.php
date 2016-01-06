@@ -12,7 +12,7 @@ abstract class Stat extends Entity
     public $memoryUsage = 0;
     public $peakMemoryUsage = 0;
     public $cpu = 0;
-    public $runs = 1;
+    public $runs = 0;
 
     static function setUpColumns($columns)
     {
