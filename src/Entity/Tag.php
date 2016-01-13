@@ -12,6 +12,7 @@ class Tag extends Entity
 {
     public $id;
     public $projectId;
+    public $type;
     public $text;
     public $lastSeen;
 
@@ -24,6 +25,7 @@ class Tag extends Entity
     {
         $columns->id = Column::AUTO_ID;
         $columns->projectId = Project::columns()->id;
+        $columns->type = Column::STRING;
         $columns->text = Column::STRING + Column::NOT_NULL;
         $columns->lastSeen = Column::TIMESTAMP + Column::INTEGER;
     }

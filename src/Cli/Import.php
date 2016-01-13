@@ -4,6 +4,7 @@ namespace Phperf\Xhprof\Cli;
 
 use Mishak\ArchiveTar\Reader;
 use Phperf\Xhprof\BatchSaver;
+use Phperf\Xhprof\Entity\Project;
 use Phperf\Xhprof\Entity\RelatedStat;
 use Phperf\Xhprof\Entity\Run;
 use Phperf\Xhprof\Entity\Symbol;
@@ -14,6 +15,7 @@ use Yaoi\Cli\Option;
 use Yaoi\Command\Definition;
 use Yaoi\Database;
 use Yaoi\Database\Exception;
+use Yaoi\Io\Content\Info;
 use Yaoi\Log;
 use Yaoi\String\Expression;
 use Yaoi\String\Parser;
@@ -22,29 +24,41 @@ use Yaoi\String\StringValue;
 class Import extends Command
 {
     public $path;
-    public $groupName;
-    public $profilerNamespace;
+    public $alias;
+    public $tags;
+    public $project;
     public $allowDuplicates;
-    public $squash;
+    public $noSquash;
 
 
     private $count;
     /** @var  Run */
-    private $groupRun;
+    private $runInstance;
     private $index = 0;
 
     private function addData($filename, $content)
     {
         try {
 
-            if (null === $this->groupRun) {
-                $this->groupRun = new Run();
-                $this->groupRun->ut = time();
-                $this->groupRun->name = $this->groupName;
-                $this->groupRun->save();
+            if (null === $this->runInstance) {
+                $this->runInstance = new Run();
+                $this->runInstance->ut = time();
+                $this->runInstance->name = $this->alias;
+                $this->runInstance->save();
+
+                if ($this->project) {
+                    $project = new Project();
+                    $project->name = $this->project;
+                    $project->findOrSave();
+
+                    $this->runInstance->projectId = $project->id;
+                }
+
+                if ($this->tags) {
+                    $this->runInstance->setTags($this->tags);
+                    $this->runInstance->save();
+                }
             }
-
-
 
             ++$this->index;
             Console::getInstance()->returnCaret()->printF(new Expression('?% ? ?',
@@ -59,16 +73,9 @@ class Import extends Command
             $nameString = new Parser($filename);
             $ut = floor((string)$nameString->inner('_', '.serialized', true));
 
-            if ($this->squash) {
-                $run = $this->groupRun;
-            }
-            else {
-                $run = new Run();
-                $run->name = $filename;
-                $run->ut = $ut;
-            }
+            $run = $this->runInstance;
 
-            if ($run->findSaved() && !$this->squash) {
+            if ($run->findSaved() && $this->noSquash) {
                 Console::getInstance()->printLine(" already imported");
                 return;
             }
@@ -140,10 +147,13 @@ class Import extends Command
             }
         }
 
-        if ($this->squash) {
+        if (!$this->noSquash) {
             $this->saveSymbolStats();
             $this->saveRelatedStats();
         }
+
+        $this->response->success('All done!');
+        $this->response->addContent(new Info('Run ID ' . $this->runInstance->id . ' added'));
     }
 
     static function setUpDefinition(Definition $definition, $options)
@@ -153,20 +163,24 @@ class Import extends Command
             ->setIsRequired()
             ->setDescription('Path to profiles directory or file');
 
-        $options->groupName = Option::create()
+        $options->alias = Option::create()
             ->setIsUnnamed()
-            ->setDescription('Profiles session/group name');
+            ->setDescription('Run alias name');
 
-        $options->profilerNamespace = Option::create()
-            ->setIsUnnamed()
-            ->setDescription('WTF?');
+        $options->project = Option::create()
+            ->setType()
+            ->setDescription('Project name');
+
+        $options->tags = Option::create()
+            ->setIsVariadic()
+            ->setDescription('Tags for imported data');
 
         $options->allowDuplicates = Option::create()
             ->setShortName('d')
             ->setDescription('Allow duplicate profiles (by file path)');
 
-        $options->squash = Option::create()
-            ->setDescription('Combine all data in one run for multiple profiles');
+        $options->noSquash = Option::create()
+            ->setDescription('Do not combine runs into one');
 
         $definition->name = 'xhprof-import';
         $definition->description = 'XHPROF data importing tool';
@@ -274,8 +288,8 @@ class Import extends Command
 
         //$batchSaver->flush();
 
-        $this->groupRun->runs++;
-        if (!$this->squash) {
+        $this->runInstance->runs++;
+        if ($this->noSquash) {
             $this->saveRelatedStats();
             $this->saveSymbolStats();
         }

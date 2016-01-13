@@ -23,6 +23,7 @@ class Run extends Stat
         $columns->runs = Column::create(Column::INTEGER + Column::NOT_NULL)->setDefault(0);
         $columns->name = Column::STRING;
         $columns->tagIds = Column::create(Column::STRING + Column::NOT_NULL)->setDefault('');
+        $columns->projectId = Column::cast(Project::columns()->id)->copy()->setFlag(Column::NOT_NULL, false);
 
         parent::setUpColumns($columns);
     }

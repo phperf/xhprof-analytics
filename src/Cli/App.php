@@ -4,8 +4,8 @@ namespace Phperf\Xhprof\Cli;
 
 
 
-use Phperf\Xhprof\Cli\Import;
 use Phperf\Xhprof\Command\Compare;
+use Phperf\Xhprof\Command\CreateProject;
 use Yaoi\Command\Application;
 use Yaoi\Command\Definition;
 
@@ -13,6 +13,7 @@ class App extends Application
 {
     public $compare;
     public $import;
+    public $createProject;
 
     /**
      * Required setup option types in provided options object
@@ -23,6 +24,7 @@ class App extends Application
     {
         $commandDefinitions->compare = Compare::definition();
         $commandDefinitions->import = Import::definition();
+        $commandDefinitions->createProject = CreateProject::definition();
 
         $definition->name = 'xha';
         $definition->description = 'XHPROF analytics tool';

@@ -21,7 +21,7 @@ class Project extends Entity
     {
         $columns->id = Column::AUTO_ID;
         $columns->apiKey = Column::STRING;
-        $columns->name = Column::STRING;
+        $columns->name = Column::create(Column::STRING)->setUnique();
         $columns->description = Column::STRING;
     }
 
