@@ -15,8 +15,10 @@ class Migrations extends BaseClass
             RelatedStat::table(),
             SymbolStat::table(),
             Project::table(),
-            RunTag::table(),
             Tag::table(),
+            Aggregate::table(),
+            ReportAggregate::table(),
+            TagGroup::table(),
         );
 
         if (null === $log) {

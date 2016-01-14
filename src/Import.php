@@ -105,7 +105,7 @@ class Import extends BaseClass
         }
 
         $this->getStat($this->getSymbol('main()'))->wallTime = $totalWallTime;
-        $this->getStat($this->getSymbol('main()'))->count = $totalCount;
+        $this->getStat($this->getSymbol('main()'))->calls = $totalCount;
 
 
         //$batchSaver->flush();

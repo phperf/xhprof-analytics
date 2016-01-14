@@ -8,7 +8,8 @@
     "require": {
         "php-yaoi/php-yaoi": "dev-master",
         "vearutop/archive-tar": "dev-master",
-        "twbs/bootstrap": "^3.3"
+        "twbs/bootstrap": "^3.3",
+        "phperf/percentiller": "^1.0"
     },
     "autoload": {
         "psr-4": {

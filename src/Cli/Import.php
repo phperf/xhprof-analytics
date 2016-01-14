@@ -9,6 +9,7 @@ use Phperf\Xhprof\Entity\RelatedStat;
 use Phperf\Xhprof\Entity\Run;
 use Phperf\Xhprof\Entity\Symbol;
 use Phperf\Xhprof\Entity\SymbolStat;
+use Phperf\Xhprof\Entity\TagGroup;
 use Yaoi\Command;
 use Yaoi\Cli\Console;
 use Yaoi\Cli\Option;
@@ -55,7 +56,12 @@ class Import extends Command
                 }
 
                 if ($this->tags) {
-                    $this->runInstance->setTags($this->tags);
+                    $tagGroup = new TagGroup();
+                    $tagGroup->setTags($this->tags);
+                    $tagGroup->projectId = $this->runInstance->projectId;
+                    $tagGroup->findOrSave();
+
+                    $this->runInstance->tagGroupId = $tagGroup->id;
                     $this->runInstance->save();
                 }
             }

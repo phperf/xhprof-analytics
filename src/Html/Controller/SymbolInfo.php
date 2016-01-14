@@ -49,7 +49,7 @@ class SymbolInfo extends Compare
         $statement = $database
             ->select(RelatedStat::table())
             ->select("SUM(?)/1000000 AS total_wt, SUM(?) AS total_ct, COUNT(DISTINCT ?) AS runs, ? AS symbol_id, ?",
-                $inc->wallTime, $inc->count, $inc->runId,
+                $inc->wallTime, $inc->calls, $inc->runId,
                 $inc->parentSymbolId, Symbol::columns()->name)
             ->leftJoin('? ON ? = ?', Symbol::table(), Symbol::columns()->id, $inc->parentSymbolId)
             ->where('? = ?', $inc->childSymbolId, $symbol->id)
@@ -76,7 +76,7 @@ class SymbolInfo extends Compare
         $statement = $database
             ->select(RelatedStat::table())
             ->select("SUM(?)/1000000 AS total_wt, SUM(?) AS total_ct, COUNT(DISTINCT ?) AS runs, ? AS symbol_id, ?",
-                $inc->wallTime, $inc->count, $inc->runId,
+                $inc->wallTime, $inc->calls, $inc->runId,
                 $inc->childSymbolId, Symbol::columns()->name)
             ->leftJoin('? ON ? = ?', Symbol::table(), Symbol::columns()->id, $inc->childSymbolId)
             ->where('? = ?', $inc->parentSymbolId, $symbol->id)

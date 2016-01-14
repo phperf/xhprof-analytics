@@ -6,12 +6,10 @@ Entities
 `Stat` is a record of profile values.
 
 `Run` is a single or combined set of profile data, belongs to a single `Project`.
-`Run` contains `Stat` record as total values.
+`Run` contains `Stat` record as total values. 
+Multiple `Run` can be merged in new one. 
+`Run` can be updated with a set of additional `Stat`.
 
-`Tag` is a text description of `Run` context. One `Run` can have multiple `Tag`.
-A combined `Run` is anchored by set of `Tag`.
-
-`RunTag` holds `Tag` marks for `Run` items.
 
 `Symbol` is name of function appeared in profile data.
 
@@ -34,7 +32,9 @@ Reduced by `TagGroup`.
 `Aggregate` can be free of `RelatedStat` data. `SymbolStat` can be reduced for some historical `Aggregate`s.
 `Aggregate` can be closed or opened for modifications. 
 
-`TagGroup` is a unique set of `Tag` in `Project` coming from `Run`.
+`Tag` is a text description of `Aggregate` context. One `Aggregate` can have multiple `Tag`.
+
+`TagGroup` is a unique set of `Tag` in `Project`.
 
 For a single `Tag` multiple `TagGroup` can be found, 
 and multiple items of `Aggregate` can be combined to one temporary `ReportAggregate` 
@@ -43,3 +43,4 @@ with a `Run` containing combined data.
 `ReportAggregate` items are deleted after expiration. All associated data is being deleted too.
 `ReportAggregate` on opened `Aggregate` items is frozen by time of creation but can be refreshed.
 
+TODO: add percentiles for aggregated stats.

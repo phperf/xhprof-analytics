@@ -19,7 +19,7 @@ class TopExcluded extends Compare
         $statement = $database
             ->select(SymbolStat::table())
             ->select("SUM(?) AS total_wt, SUM(?) AS total_ct, COUNT(DISTINCT ?) AS runs, ?, ?",
-                $esc->wallTime, $esc->count, $esc->runId,
+                $esc->wallTime, $esc->calls, $esc->runId,
                 $esc->symbolId, Symbol::columns()->name)
             ->leftJoin('? ON ? = ?', Symbol::table(), Symbol::columns()->id, $esc->symbolId)
             ->groupBy(SymbolStat::columns()->symbolId)

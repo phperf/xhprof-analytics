@@ -8,7 +8,7 @@ use Yaoi\Database\Entity;
 abstract class Stat extends Entity
 {
     public $wallTime = 0;
-    public $count = 0;
+    public $calls = 0;
     public $memoryUsage = 0;
     public $peakMemoryUsage = 0;
     public $cpu = 0;
@@ -16,17 +16,17 @@ abstract class Stat extends Entity
 
     static function setUpColumns($columns)
     {
-        $columns->wallTime = Column::create(Column::INTEGER + Column::NOT_NULL)->setDefault(0);
-        $columns->count = Column::create(Column::INTEGER + Column::NOT_NULL)->setDefault(0);
-        $columns->memoryUsage = Column::create(Column::INTEGER + Column::NOT_NULL)->setDefault(0);
-        $columns->peakMemoryUsage = Column::create(Column::INTEGER + Column::NOT_NULL)->setDefault(0);
-        $columns->cpu = Column::create(Column::INTEGER + Column::NOT_NULL)->setDefault(0);
-        $columns->runs = Column::create(Column::INTEGER + Column::NOT_NULL)->setDefault(0);
+        $columns->wallTime = Column::create(Column::INTEGER + Column::NOT_NULL);
+        $columns->calls = Column::create(Column::INTEGER + Column::NOT_NULL);
+        $columns->memoryUsage = Column::create(Column::INTEGER + Column::NOT_NULL);
+        $columns->peakMemoryUsage = Column::create(Column::INTEGER + Column::NOT_NULL);
+        $columns->cpu = Column::create(Column::INTEGER + Column::NOT_NULL);
+        $columns->runs = Column::create(Column::INTEGER + Column::NOT_NULL);
 
     }
 
     public function importFromXhData(array $data) {
-        $this->count = $data['ct'];
+        $this->calls = $data['ct'];
         $this->wallTime = $data['wt'];
         $this->cpu = isset($data['cpu']) ? $data['cpu'] : 0;
         $this->memoryUsage = isset($data['mu']) ? $data['mu'] : 0;
@@ -37,7 +37,7 @@ abstract class Stat extends Entity
     public function addXhSample($data, $addTime = true) {
         $this->runs++;
 
-        $this->count += $data['ct'];
+        $this->calls += $data['ct'];
         if ($addTime) {
             $this->wallTime += $data['wt'];
             $this->cpu += isset($data['cpu']) ? $data['cpu'] : 0;
