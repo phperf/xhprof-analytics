@@ -6,12 +6,19 @@ namespace Phperf\Xhprof;
 use Phperf\Xhprof\Command\View\Compare;
 use Phperf\Xhprof\Html\Controller\SymbolInfo;
 use Phperf\Xhprof\Html\Controller\TopExcluded;
+use Phperf\Xhprof\Ui\App;
+use Phperf\Xhprof\Ui\Application\Runner;
 use Yaoi\Database;
 use Yaoi\View\Table\HTML;
 
 require_once __DIR__ . '/../vendor/autoload.php';
 require_once __DIR__ . '/../env/conf.php';
 
+
+Runner::create(new App())->run();
+
+return;
+/*
 if (isset($_GET['run1']) && isset($_GET['run2'])) {
     Compare::compare($_GET['run1'], $_GET['run2'], $_GET['inclusive']);
 }

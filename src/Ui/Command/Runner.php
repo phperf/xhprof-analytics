@@ -7,7 +7,7 @@
 
 namespace Phperf\Xhprof\Ui\Command;
 
-use Phperf\Xhprof\Ui\RequestMapper;
+use Phperf\Xhprof\Ui\Io;
 use Phperf\Xhprof\Ui\Response;
 use Yaoi\BaseClass;
 use Yaoi\Command\Exception;
@@ -65,8 +65,8 @@ class Runner extends BaseClass implements \Yaoi\Command\RunnerContract
         $this->request = $request;
 
         try {
-            $this->reader = new RequestMapper();
-            $this->reader->read($request, $this->command->optionsArray());
+            $this->reader = new Io();
+            $this->reader->readRequest($request, $this->command->optionsArray());
         } catch (Exception $exception) {
             $this->response->error($exception->getMessage());
             return $this;

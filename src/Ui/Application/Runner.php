@@ -1,6 +1,7 @@
 <?php
 namespace Phperf\Xhprof\Ui\Application;
 
+use Phperf\Xhprof\Ui\Io;
 use Phperf\Xhprof\Ui\Response;
 use Yaoi\BaseClass;
 use Yaoi\Command;
@@ -24,7 +25,7 @@ class Runner extends BaseClass implements \Yaoi\Command\RunnerContract
     /** @var Response */
     protected $response;
 
-    /** @var RequestReader */
+    /** @var Io */
     protected $reader;
 
 
@@ -53,8 +54,8 @@ class Runner extends BaseClass implements \Yaoi\Command\RunnerContract
                 throw new Command\Exception('Application required', Command\Exception::INVALID_ARGUMENT);
             }
 
-            $this->reader = new RequestReader();
-            $this->reader->read($request, $this->command->optionsArray());
+            $this->reader = new Io();
+            $this->reader->readRequest($request, $this->command->optionsArray());
         } catch (Command\Exception $exception) {
             if (empty($this->reader->values['action'])) { // TODO symbolize 'action' literal
                 $this->response->error($exception->getMessage());
