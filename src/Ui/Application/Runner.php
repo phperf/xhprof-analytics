@@ -1,7 +1,7 @@
 <?php
 namespace Phperf\Xhprof\Ui\Application;
 
-use Phperf\Xhprof\Ui\Io;
+use Yaoi\Command\Io\Io;
 use Phperf\Xhprof\Ui\Response;
 use Yaoi\BaseClass;
 use Yaoi\Command;
@@ -55,7 +55,7 @@ class Runner extends BaseClass implements \Yaoi\Command\RunnerContract
             }
 
             $this->reader = new Io();
-            $this->reader->readRequest($request, $this->command->optionsArray());
+            $this->reader->readOptions($request, $this->command->optionsArray());
         } catch (Command\Exception $exception) {
             if (empty($this->reader->values['action'])) { // TODO symbolize 'action' literal
                 $this->response->error($exception->getMessage());

@@ -3,14 +3,16 @@ namespace  Phperf\Xhprof\Command\Ui;
 
 use Phperf\Xhprof\Command\Compare;
 use Phperf\Xhprof\Command\CreateProject;
+use Phperf\Xhprof\Command\Runs;
 use Yaoi\Cli\Option;
 use Yaoi\Command;
 use Yaoi\Command\Definition;
+use Yaoi\Database\Exception;
 
 class Index extends Command
 {
     /**
-     * @var Definition
+     * @var Command
      */
     public $action;
 
@@ -23,6 +25,8 @@ class Index extends Command
     {
         $options->action = Option::create()
             ->setDescription('Root action')
+            ->setIsRequired()
+            ->addToEnum(Runs::definition())
             ->addToEnum(Oauth2::definition())
             ->addToEnum(Compare::definition())
             ->addToEnum(CreateProject::definition());
@@ -32,12 +36,13 @@ class Index extends Command
 
     public function performAction()
     {
-        $commandClass = $this->action->commandClass;
-        $actionCommand = new $commandClass;
-
-        $this->runner->run();
-
-        // TODO: Implement performAction() method.
+        var_dump($this->action);
+        try {
+            $this->action->performAction();
+        }
+        catch (Exception $e) {
+            var_dump($e->query);
+        }
     }
 
 }

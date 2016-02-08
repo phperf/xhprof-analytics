@@ -64,7 +64,7 @@ class Compare extends BaseClass
     public function addRun($runName) {
         if (!array_key_exists($runName, $this->runs)) {
             $run = Run::statement()->select('*')
-                ->where('? = ?', Run::columns()->name, $runName)
+                ->where('? = ? OR ? = ?', Run::columns()->name, $runName, Run::columns()->id, $runName)
                 ->query()->fetchRow();
             $this->runs[$runName] = $run;
             $this->runIds []= Run::cast($run)->id;

@@ -3,11 +3,11 @@
 
 namespace Phperf\Xhprof;
 
+use Phperf\Xhprof\Command\Ui\Index;
 use Phperf\Xhprof\Command\View\Compare;
 use Phperf\Xhprof\Html\Controller\SymbolInfo;
 use Phperf\Xhprof\Html\Controller\TopExcluded;
-use Phperf\Xhprof\Ui\App;
-use Phperf\Xhprof\Ui\Application\Runner;
+use Phperf\Xhprof\Ui\Runner;
 use Yaoi\Database;
 use Yaoi\View\Table\HTML;
 
@@ -15,7 +15,7 @@ require_once __DIR__ . '/../vendor/autoload.php';
 require_once __DIR__ . '/../env/conf.php';
 
 
-Runner::create(new App())->run();
+Runner::run(Index::definition());
 
 return;
 /*
