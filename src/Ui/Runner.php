@@ -2,6 +2,7 @@
 
 namespace Phperf\Xhprof\Ui;
 
+use Phperf\Xhprof\Html\View\Layout;
 use Yaoi\BaseClass;
 use Yaoi\Command;
 use Yaoi\Io\Request;
@@ -14,15 +15,22 @@ class Runner extends BaseClass //implements \Yaoi\Command\RunnerContract
             $request = Request::createAuto();
         }
 
+        $requestMapper = new Command\Web\RequestMapperWithPath($request);
         $response = new Response();
 
+        $layout = new Layout();
+        $layout->pushMain($response);
+
+
         try {
-            $io = new Command\Io($definition, $request, $response);
-            $io->command->performAction();
+            $io = new Command\Io($definition, $requestMapper, $response);
+            $io->getCommand()->performAction();
         }
         catch (\Exception $exception) {
             $response->error($exception->getMessage());
         }
+
+        $layout->render();
     }
 
 

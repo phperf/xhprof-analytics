@@ -26,6 +26,7 @@ class Index extends Command
         $options->action = Option::create()
             ->setDescription('Root action')
             ->setIsRequired()
+            ->setIsUnnamed()
             ->addToEnum(Runs::definition())
             ->addToEnum(Oauth2::definition())
             ->addToEnum(Compare::definition())
@@ -36,7 +37,7 @@ class Index extends Command
 
     public function performAction()
     {
-        var_dump($this->action);
+        //var_dump($this->action);
         try {
             $this->action->performAction();
         }

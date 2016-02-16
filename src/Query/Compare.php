@@ -10,6 +10,7 @@ use Yaoi\Sql\Symbol as S;
 use Phperf\Xhprof\Entity\SymbolStat;
 use Yaoi\BaseClass;
 use Yaoi\Database;
+use Yaoi\String\Expression;
 
 class Compare extends BaseClass
 {
@@ -66,6 +67,9 @@ class Compare extends BaseClass
             $run = Run::statement()->select('*')
                 ->where('? = ? OR ? = ?', Run::columns()->name, $runName, Run::columns()->id, $runName)
                 ->query()->fetchRow();
+            if (!$run) {
+                throw new \Exception(Expression::create('Run ? not found', $runName));
+            }
             $this->runs[$runName] = $run;
             $this->runIds []= Run::cast($run)->id;
         }
