@@ -25,14 +25,21 @@ class Runs extends Command
 
     public function performAction()
     {
-        $runs = Run::statement()->bindResultClass()->query();
-        $idColumn = Column::cast(Run::columns()->id)->schemaName;
+        /** @var Run[] $runs */
+        $runs = Run::statement()->query();
         $rows = array();
 
+        //Compare::options()->run =
+
+        $compare = Compare::createState();
+
         foreach ($runs as $run) {
-            $run[$idColumn] = new Anchor($run[$idColumn], '/about');
-            $rows []= $run;
+            $compare->run = $run->id;
+            $run->id = new Anchor($run->id, $this->io->makeAnchor($compare));
+            $rows []= $run->toArray(false, true);
         }
+
+        //var_dump($rows);
 
         $this->response->addContent(new Rows(new \ArrayIterator($rows)));
     }

@@ -2,12 +2,17 @@
 
 namespace Phperf\Xhprof\Command\Ui;
 
+use Phperf\Xhprof\Command\Combine;
 use Yaoi\Command;
 use Yaoi\Command\Definition;
 
 class Oauth2 extends Command
 {
     public $type;
+
+    /** @var Command */
+    public $action;
+
 
     const TYPE_GITHUB = 'github';
 
@@ -18,9 +23,12 @@ class Oauth2 extends Command
      */
     static function setUpDefinition(Definition $definition, $options)
     {
+        $options->action = Command\Option::create()->addToEnum(Combine::definition());
+
         $options->type = Command\Option::create()
             ->setEnum(self::TYPE_GITHUB)
             ->setIsUnnamed();
+
     }
 
     public function performAction()
