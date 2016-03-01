@@ -10,6 +10,7 @@ use Yaoi\Database\Definition\Column;
 use Yaoi\Io\Content\Anchor;
 use Yaoi\Io\Content\Rows;
 use Yaoi\Io\Content\Success;
+use Yaoi\Rows\Processor;
 
 class Runs extends Command
 {
@@ -26,22 +27,16 @@ class Runs extends Command
     public function performAction()
     {
         /** @var Run[] $runs */
-        $runs = Run::statement()->query();
-        $rows = array();
-
-        //Compare::options()->run =
+        $runs = Run::statement()->bindResultClass()->query();
 
         $compare = Compare::createState();
+        $addLink = function($row) use ($compare) {
+            $compare->runs = array($row['id']);
+            $row['id'] = new Anchor($row['id'], $this->io->makeAnchor($compare));
+            return $row;
+        };
 
-        foreach ($runs as $run) {
-            $compare->run = $run->id;
-            $run->id = new Anchor($run->id, $this->io->makeAnchor($compare));
-            $rows []= $run->toArray(false, true);
-        }
-
-        //var_dump($rows);
-
-        $this->response->addContent(new Rows(new \ArrayIterator($rows)));
+        $this->response->addContent(new Rows(Processor::create($runs)->map($addLink)));
     }
 
 }

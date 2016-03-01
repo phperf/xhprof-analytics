@@ -28,7 +28,6 @@ class Oauth2 extends Command
         $options->type = Command\Option::create()
             ->setEnum(self::TYPE_GITHUB)
             ->setIsUnnamed();
-
     }
 
     public function performAction()

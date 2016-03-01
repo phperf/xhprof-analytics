@@ -56,7 +56,8 @@ class Response extends \Yaoi\Io\Response implements Renderer
                 return '<div role="alert" class="alert alert-success">' . $message->value . '</div>';
 
             case $message instanceof Anchor:
-                return '<a href="' . $message->anchor . '">' . $message->value . '</a>';
+                return '<a href="' . $message->anchor . '">'
+                . $message->value . '</a>';
 
             case $message instanceof Text:
                 return '<div class="text ' . $message->type . '">' . $message->value . '</div>';

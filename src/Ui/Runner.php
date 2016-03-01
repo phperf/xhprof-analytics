@@ -15,7 +15,7 @@ class Runner extends BaseClass //implements \Yaoi\Command\RunnerContract
             $request = Request::createAuto();
         }
 
-        $requestMapper = new Command\Web\RequestMapperWithPath($request);
+        $requestMapper = new Command\Web\RequestMapper($request);
         $response = new Response();
 
         $layout = new Layout();
@@ -27,6 +27,7 @@ class Runner extends BaseClass //implements \Yaoi\Command\RunnerContract
             $io->getCommand()->performAction();
         }
         catch (\Exception $exception) {
+            var_dump($exception);
             $response->error($exception->getMessage());
         }
 

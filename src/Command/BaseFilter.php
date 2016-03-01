@@ -8,7 +8,7 @@ use Yaoi\Command;
 
 abstract class BaseFilter extends Command
 {
-    public $run;
+    public $runs;
     public $symbol;
     public $isInclusive = 0;
     public $limit = 50;
@@ -16,7 +16,7 @@ abstract class BaseFilter extends Command
 
     static function setUpDefinition(Command\Definition $definition, $options)
     {
-        $options->run = Command\Option::create()
+        $options->runs = Command\Option::create()
             ->setIsUnnamed()
             ->setIsRequired()
             ->setDescription('Run name')

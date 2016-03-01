@@ -8,6 +8,8 @@ use Yaoi\Cli\Option;
 use Yaoi\Command;
 use Yaoi\Command\Definition;
 use Yaoi\Database\Exception;
+use Yaoi\Io\Content\Anchor;
+use Yaoi\Undefined;
 
 class Index extends Command
 {
@@ -25,8 +27,9 @@ class Index extends Command
     {
         $options->action = Option::create()
             ->setDescription('Root action')
-            ->setIsRequired()
+            //->setIsRequired()
             ->setIsUnnamed()
+            ->addToEnum('')
             ->addToEnum(Runs::definition())
             ->addToEnum(Oauth2::definition())
             ->addToEnum(Compare::definition())
@@ -39,7 +42,12 @@ class Index extends Command
     {
         //var_dump($this->action);
         try {
-            $this->action->performAction();
+            if ($this->action && !$this->action instanceof Undefined) {
+                $this->action->performAction();
+            }
+            else {
+                $this->response->addContent(new Anchor('Show all runs', $this->io->makeAnchor(Runs::createState())));
+            }
         }
         catch (Exception $e) {
             var_dump($e->query);
