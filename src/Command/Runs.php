@@ -10,6 +10,7 @@ use Yaoi\Database\Definition\Column;
 use Yaoi\Io\Content\Anchor;
 use Yaoi\Io\Content\Rows;
 use Yaoi\Io\Content\Success;
+use Yaoi\Rows\Processor;
 
 class Runs extends Command
 {
@@ -41,7 +42,7 @@ class Runs extends Command
 
         //var_dump($rows);
 
-        $this->response->addContent(new Rows(new \ArrayIterator($rows)));
+        $this->response->addContent(new Rows(Processor::create($runs)->map($addLink)));
     }
 
 }
