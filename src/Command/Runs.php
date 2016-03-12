@@ -27,14 +27,20 @@ class Runs extends Command
     public function performAction()
     {
         /** @var Run[] $runs */
-        $runs = Run::statement()->bindResultClass()->query();
+        $runs = Run::statement()->query();
+        $rows = array();
+
+        //Compare::options()->run =
 
         $compare = Compare::createState();
-        $addLink = function($row) use ($compare) {
-            $compare->runs = array($row['id']);
-            $row['id'] = new Anchor($row['id'], $this->io->makeAnchor($compare));
-            return $row;
-        };
+
+        foreach ($runs as $run) {
+            $compare->run = $run->id;
+            $run->id = new Anchor($run->id, $this->io->makeAnchor($compare));
+            $rows []= $run->toArray(false, true);
+        }
+
+        //var_dump($rows);
 
         $this->response->addContent(new Rows(Processor::create($runs)->map($addLink)));
     }

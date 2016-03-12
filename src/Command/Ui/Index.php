@@ -27,11 +27,9 @@ class Index extends Command
     {
         $options->action = Option::create()
             ->setDescription('Root action')
-            //->setIsRequired()
             ->setIsUnnamed()
             ->addToEnum('')
             ->addToEnum(Runs::definition())
-            ->addToEnum(Oauth2::definition())
             ->addToEnum(Compare::definition())
             ->addToEnum(CreateProject::definition());
 
