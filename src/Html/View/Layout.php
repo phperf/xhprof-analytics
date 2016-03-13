@@ -62,7 +62,7 @@ class Layout extends Hardcoded
   </head>
   <body>
   <div class="container">
-      <h1><?=$this->title?></h1>
+      <h1><a href="/"><?=$this->title?></a></h1>
       <?php echo $this->main ?>
   </div>
 

@@ -5,7 +5,7 @@ namespace Phperf\Xhprof\Entity;
 
 use Yaoi\Database\Definition\Column;
 
-class ReportAggregate extends Aggregate
+class AggregateReport extends Aggregate
 {
     public $utCreated;
 

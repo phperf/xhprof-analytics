@@ -4,6 +4,7 @@ namespace  Phperf\Xhprof\Command\Ui;
 use Phperf\Xhprof\Command\Compare;
 use Phperf\Xhprof\Command\CreateProject;
 use Phperf\Xhprof\Command\Runs;
+use Phperf\Xhprof\Service\ProfilingClient;
 use Yaoi\Cli\Option;
 use Yaoi\Command;
 use Yaoi\Command\Definition;
@@ -41,6 +42,8 @@ class Index extends Command
         //var_dump($this->action);
         try {
             if ($this->action && !$this->action instanceof Undefined) {
+                $url = $this->io->makeAnchor(Index::createState($this->io));
+                ProfilingClient::addTag('action', (string)$url);
                 $this->action->performAction();
             }
             else {

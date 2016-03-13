@@ -32,7 +32,10 @@ Reduced by `TagGroup`.
 `Aggregate` can be free of `RelatedStat` data. `SymbolStat` can be reduced for some historical `Aggregate`s.
 `Aggregate` can be closed or opened for modifications. 
 
-`Tag` is a text description of `Aggregate` context. One `Aggregate` can have multiple `Tag`.
+`Tag` is a text description of `Aggregate` context. One `Aggregate` 
+can have multiple `Tag`.
+`Tag` can contain: server name, php version, application name, 
+controller info, code version, etc.
 
 `TagGroup` is a unique set of `Tag` in `Project`.
 

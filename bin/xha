@@ -1,7 +1,10 @@
 #!/usr/bin/env php
 <?php
-
+//xhprof_enable(XHPROF_FLAGS_CPU | XHPROF_FLAGS_MEMORY);
 require_once __DIR__ . '/../vendor/autoload.php';
 require_once __DIR__ . '/../env/conf.php';
 
 \Yaoi\Cli\Command\Application\Runner::create(new \Phperf\Xhprof\Cli\App)->run();
+
+//$data = xhprof_disable();
+//file_put_contents('/tmp/xh/xha.' . microtime(1) . '.serialized', serialize($data));

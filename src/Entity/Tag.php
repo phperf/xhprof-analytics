@@ -11,8 +11,9 @@ use Yaoi\Database\Entity;
 class Tag extends Entity
 {
     public $id;
-    public $type;
     public $text;
+    public $name;
+    public $value;
 
     /**
      * Required setup column types in provided columns object
@@ -21,8 +22,9 @@ class Tag extends Entity
     static function setUpColumns($columns)
     {
         $columns->id = Column::AUTO_ID;
-        $columns->type = Column::STRING;
         $columns->text = Column::STRING + Column::NOT_NULL;
+        $columns->name = Column::STRING + Column::NOT_NULL;
+        $columns->value = Column::STRING;
     }
 
     /**
@@ -33,6 +35,7 @@ class Tag extends Entity
      */
     static function setUpTable(\Yaoi\Database\Definition\Table $table, $columns)
     {
+        $table->addIndex(Index::TYPE_UNIQUE, $columns->text);
         $table->setSchemaName('phperf_xhprof_tag');
     }
 

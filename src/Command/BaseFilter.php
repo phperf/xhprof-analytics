@@ -17,7 +17,7 @@ abstract class BaseFilter extends Command
     static function setUpDefinition(Command\Definition $definition, $options)
     {
         $options->runs = Command\Option::create()
-            ->setIsUnnamed()
+            //->setIsUnnamed()
             ->setIsRequired()
             ->setDescription('Run name')
             ->setType();

@@ -7,11 +7,17 @@ use Yaoi\Database\Entity;
 
 abstract class Stat extends Entity
 {
+    /** @var int|Column  */
     public $wallTime = 0;
+    /** @var int|Column */
     public $calls = 0;
+    /** @var int|Column */
     public $memoryUsage = 0;
+    /** @var int|Column */
     public $peakMemoryUsage = 0;
+    /** @var int|Column */
     public $cpu = 0;
+    /** @var int|Column */
     public $runs = 0;
 
     static function setUpColumns($columns)

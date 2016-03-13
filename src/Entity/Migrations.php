@@ -17,7 +17,7 @@ class Migrations extends BaseClass
             Project::table(),
             Tag::table(),
             Aggregate::table(),
-            ReportAggregate::table(),
+            AggregateReport::table(),
             TagGroup::table(),
         );
 

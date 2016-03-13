@@ -3,25 +3,31 @@
 namespace Phperf\Xhprof\Api;
 
 
+use Phperf\Xhprof\Cli\Import;
 use Phperf\Xhprof\Command\Compare;
+use Yaoi\Command;
 use Yaoi\Command\Definition;
 
-class Application extends \Yaoi\Command\Application
+class Application extends Command
 {
-    public $compare;
+    public $action;
+    public $outputFormat;
 
-    /**
-     * Required setup option types in provided options object
-     * @param $definition Definition
-     * @param $commandDefinitions static|\stdClass
-     */
-    static function setUpCommands(Definition $definition, $commandDefinitions)
+    static function setUpDefinition(Definition $definition, $options)
     {
-        $definition->name = 'xhprof-analytics-api';
-        $definition->description = 'XHPROF Analytics API';
-        $definition->version = 'v0.1';
+        $options->action = Command\Option::create()
+            ->setIsUnnamed()
+            ->setIsRequired()
+            ->addToEnum(Import::definition());
 
-        $commandDefinitions->compare = Compare::definition();
+        $options->outputFormat = Command\Option::create()->setType();
     }
+
+    public function performAction()
+    {
+        var_dump($this->action);
+        // TODO: Implement performAction() method.
+    }
+
 
 }

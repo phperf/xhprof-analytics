@@ -18,7 +18,7 @@ class TagGroupTest extends TestCase
         $this->assertEquals(array('tag1', 'tag2', 'tag3'), Tag::statement()
             ->where('? IN (?)', Tag::columns()->id, new Raw(TagGroup::findByPrimaryKey($tagGroup->id)->tagIds))
             ->query()
-            ->fetchAll(null, Tag::columns()->text));
+            ->fetchAll(null, Tag::columns()->name));
 
     }
 }

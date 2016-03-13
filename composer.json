@@ -6,7 +6,7 @@
         }
     ],
     "require": {
-        "php-yaoi/php-yaoi": "dev-master",
+        "php-yaoi/php-yaoi": "dev-dirty",
         "vearutop/archive-tar": "dev-master",
         "phperf/percentiller": "^1.0"
     },

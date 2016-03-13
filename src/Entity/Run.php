@@ -33,4 +33,30 @@ class Run extends Stat
         $table->setSchemaName('phperf_xhprof_run');
     }
 
+
+    public function setProjectByName($projectName)
+    {
+        $project = new Project();
+        $project->name = $projectName;
+        $project->findOrSave();
+
+        $this->projectId = $project->id;
+        $this->save();
+
+        return $this;
+    }
+
+    public function setTagsByValues($tags)
+    {
+        $tagGroup = new TagGroup();
+        $tagGroup->setTags($tags);
+        $tagGroup->projectId = $this->projectId;
+        $tagGroup->findOrSave();
+
+        $this->tagGroupId = $tagGroup->id;
+        $this->save();
+
+        return $this;
+    }
+
 }

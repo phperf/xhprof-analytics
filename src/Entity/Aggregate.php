@@ -2,7 +2,6 @@
 
 namespace Phperf\Xhprof\Entity;
 
-
 use Yaoi\Database\Definition\Column;
 use Yaoi\Database\Definition\Table;
 use Yaoi\Database\Entity;
@@ -13,7 +12,8 @@ class Aggregate extends Entity
     const PERIOD_MINUTE = 1;
     const PERIOD_HOUR = 2;
     const PERIOD_DAY = 3;
-    const PERIOD_MONTH = 4;
+    const PERIOD_WEEK = 4;
+    const PERIOD_MONTH = 5;
 
     public $id;
     public $runId;
@@ -21,6 +21,7 @@ class Aggregate extends Entity
     public $period;
     public $utFrom;
     public $utTo;
+    public $closed;
 
     /**
      * Required setup column types in provided columns object
@@ -30,10 +31,13 @@ class Aggregate extends Entity
     {
         $columns->id = Column::AUTO_ID;
         $columns->runId = Run::columns()->id;
-        $columns->tagGroupId = TagGroup::columns()->id;
-        $columns->period = Column::INTEGER + Column::NOT_NULL;
+        $columns->tagGroupId = Column::cast(TagGroup::columns()->id)->copy()
+            ->setFlag(Column::NOT_NULL, false)
+            ->setDefault(null);
         $columns->utFrom = Column::INTEGER + Column::TIMESTAMP;
+        $columns->period = Column::INTEGER + Column::NOT_NULL + Column::SIZE_1B;
         $columns->utTo = Column::INTEGER + Column::TIMESTAMP;
+        $columns->closed = Column::INTEGER + Column::SIZE_1B + Column::NOT_NULL;
     }
 
     /**
@@ -45,11 +49,4 @@ class Aggregate extends Entity
     static function setUpTable(\Yaoi\Database\Definition\Table $table, $columns)
     {
     }
-
-
-    public function merge(Run $run)
-    {
-
-    }
-
 }

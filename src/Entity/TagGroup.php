@@ -5,7 +5,6 @@ namespace Phperf\Xhprof\Entity;
 use Yaoi\Database\Definition\Column;
 use Yaoi\Database\Definition\Table;
 use Yaoi\Database\Entity;
-use Yaoi\Undefined;
 
 class TagGroup extends Entity
 {
@@ -40,9 +39,18 @@ class TagGroup extends Entity
     }
 
 
-    public function setTags(array $tagTexts)
+    public function setTags(array $tags)
     {
         $tagCols = Tag::columns();
+
+
+        $tagTexts = array();
+        $nameValues = array();
+        foreach ($tags as $name => $value) {
+            $tagText = $value ? $name . ':' . $value : $name;
+            $tagTexts []= $tagText;
+            $nameValues[$tagText] = array($name, $value);
+        }
 
         $tagIdsToAdd = array();
 
@@ -60,6 +68,7 @@ class TagGroup extends Entity
         foreach ($tagIdsToAdd as $tagText => $tagId) {
             $newTag = new Tag();
             $newTag->text = $tagText;
+            list($newTag->name, $newTag->value) = $nameValues[$tagText];
             $newTag->save();
             $tagIdsByText [$tagText] = $newTag->id;
         }
