@@ -2,21 +2,7 @@
 
 namespace Phperf\Xhprof\Cli;
 
-use GeoTool\Entities\Points;
-use GeoTool\Entities\Segment10;
-use GeoTool\Entities\Segment100;
-use GeoTool\Entities\Segment10k;
-use GeoTool\Entities\Segment1k;
-use GeoTool\Entities\Segment5;
-use GeoTool\Entities\Segment50;
-use GeoTool\Entities\Segment500;
-use GeoTool\Entities\Segment5k;
 use Phperf\Xhprof\Entity\Aggregate;
-use Phperf\Xhprof\Entity\AggregateDay;
-use Phperf\Xhprof\Entity\AggregateHour;
-use Phperf\Xhprof\Entity\AggregateMinute;
-use Phperf\Xhprof\Entity\AggregateMonth;
-use Phperf\Xhprof\Entity\AggregateWeek;
 use Phperf\Xhprof\Entity\Project;
 use Phperf\Xhprof\Entity\RelatedStat;
 use Phperf\Xhprof\Entity\AggregateReport;
@@ -25,6 +11,8 @@ use Phperf\Xhprof\Entity\Symbol;
 use Phperf\Xhprof\Entity\SymbolStat;
 use Phperf\Xhprof\Entity\Tag;
 use Phperf\Xhprof\Entity\TagGroup;
+use Phperf\Xhprof\Entity\TempRun;
+use Phperf\Xhprof\Entity\TempSymbolStat;
 use Yaoi\Command;
 use Yaoi\Command\Definition;
 use Yaoi\Database\Definition\Table;
@@ -56,6 +44,9 @@ class Migrate extends Command
             Aggregate::table(),
             AggregateReport::table(),
             TagGroup::table(),
+            TempRun::table(),
+            TempSymbolStat::table(),
+            TempSymbolStat::table()
         );
 
         $log = new Log('colored-stdout');

@@ -97,6 +97,10 @@ class Compare extends BaseClass
 
     protected $avgWtSymbols;
 
+    /**
+     * @param Run $run
+     * @param SymbolStat $runXCols
+     */
     protected function addColumns(Run $run, $runXCols) {
         $awgWtSymbol = new S($run->name . '_wtms_avg');
         $this->avgWtSymbols [] = $awgWtSymbol;
@@ -104,8 +108,8 @@ class Compare extends BaseClass
         $this->expr->select('0.001 * ? / ? AS ?', $runXCols->wallTime, $run->runs, $awgWtSymbol);
         $this->expr->select('0.001 * ? / ? AS ?', $runXCols->cpu, $run->runs, new S($run->name . '_cpums_avg'));
         $this->expr->select('? AS ?', $runXCols->runs, new S($run->name . '_runs'));
-        //$this->expr->select('? AS ?', $runXCols->count, new S($run->name . '_calls'));
-        //$this->expr->select('0.001 * ? / ? AS ?', $runXCols->wallTime, $runXCols->count, new S($run->name . '_call_wt'));
+        $this->expr->select('? AS ?', $runXCols->calls, new S($run->name . '_calls'));
+        $this->expr->select('0.001 * ? / ? AS ?', $runXCols->wallTime, $runXCols->calls, new S($run->name . '_call_wt'));
         $this->expr->select('100 * ? / ? AS ?', $runXCols->wallTime, $run->wallTime, new S($run->name . '_wt_percent'));
     }
 

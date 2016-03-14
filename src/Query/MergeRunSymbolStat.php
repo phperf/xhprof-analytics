@@ -68,7 +68,7 @@ class MergeRunSymbolStat extends BaseClass
             $expr->select('?', $column);
         }
 
-        $expr->leftJoin('(?) AS run_ids ON 1', $this->unionRunIdsExpr());
+        $expr->leftJoin('? AS run_ids ON 1', $this->unionRunIdsExpr());
         return $expr;
     }
 

@@ -250,11 +250,11 @@ class ProfileManager
     {
         $time = $run->ut; // TODO process timezone
         $dates = array(
-            Aggregate::PERIOD_MINUTE => 60 * (int)($time / 60),
-            Aggregate::PERIOD_HOUR => 3600 * (int)($time / 3600),
+            //Aggregate::PERIOD_MINUTE => 60 * (int)($time / 60),
+            //Aggregate::PERIOD_HOUR => 3600 * (int)($time / 3600),
             Aggregate::PERIOD_DAY => strtotime('today 00:00:00', $time),
-            Aggregate::PERIOD_WEEK => strtotime('monday this week 00:00:00', $time),
-            Aggregate::PERIOD_MONTH => strtotime('first day of this month 00:00:00', $time),
+            //Aggregate::PERIOD_WEEK => strtotime('monday this week 00:00:00', $time),
+            //Aggregate::PERIOD_MONTH => strtotime('first day of this month 00:00:00', $time),
         );
 
         $destinations = array();

@@ -88,6 +88,10 @@ class ProfilingClient
                 $this->stopAndSave($data);
             }
             catch (Exception $exception) {
+                ini_set('xdebug.var_display_max_depth', 5);
+                ini_set('xdebug.var_display_max_children', 256);
+                ini_set('xdebug.var_display_max_data', 10240);
+
                 var_dump($exception->getMessage(), $exception->query);
             }
 
