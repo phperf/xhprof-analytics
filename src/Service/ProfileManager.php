@@ -126,6 +126,9 @@ class ProfileManager
             unset($parentSymbol, $childSymbol);
         }
 
+        $run->calls += $totalInclusive->calls;
+        $run->save();
+
         //$batchSaver->flush();
 
         if ($this->runInstance) {
@@ -284,7 +287,7 @@ class ProfileManager
 
         foreach ($destinations as $destination) {
             $destination->wallTime += $run->wallTime;
-            $destination->cpu += $run->wallTime;
+            $destination->cpu += $run->cpu;
             $destination->calls += $run->calls;
             $destination->runs += $run->runs;
             $destination->memoryUsage = max($run->memoryUsage, $destination->memoryUsage);

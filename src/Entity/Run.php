@@ -14,7 +14,7 @@ class Run extends Stat
     public $tagGroupId;
     public $ut;
     public $name;
-    public $runs = 1;
+    public $runs = 0;
 
     static function setUpColumns($columns)
     {

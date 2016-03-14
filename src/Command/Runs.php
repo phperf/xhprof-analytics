@@ -75,7 +75,12 @@ class Runs extends Command
             function (Run $run) use ($compare, $time, $tags, $tagGroupTags) {
                 $compare->runs = $run->id;
                 $row = array();
-                $row['Run'] = new Anchor($run->id, $this->io->makeAnchor($compare));
+
+                $compare->isInclusive = false;
+                $row['Exclusive'] = new Anchor('Exclusive', $this->io->makeAnchor($compare));
+
+                $compare->isInclusive = true;
+                $row['Inclusive'] = new Anchor('Inclusive', $this->io->makeAnchor($compare));
                 $row['Time'] = $time->date("Y-m-d H:i:s", $run->ut);
                 $rowTags = array();
                 if (isset($tagGroupTags[$run->tagGroupId])) {
