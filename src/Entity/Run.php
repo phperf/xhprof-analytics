@@ -58,4 +58,21 @@ class Run extends Stat
         return $this;
     }
 
+    /**
+     * @return SymbolStat
+     */
+    public function symbolStat()
+    {
+        return new SymbolStat();
+    }
+
+    /**
+     * @return RelatedStat
+     */
+    public function relatedStat()
+    {
+        return new RelatedStat();
+    }
+
+
 }

@@ -295,7 +295,6 @@ class ProfileManager
 
             $destination->save();
         }
-
     }
 
 

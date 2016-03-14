@@ -35,6 +35,8 @@ class Runs extends Command
         $compare = Compare::createState();
         $time = TimeMachine::getInstance();
 
+        $hog = Hog::createState();
+
         $tagGroupIds = array();
         foreach ($runs as $run) {
             $tagGroupIds[$run->tagGroupId] = $run->tagGroupId;
@@ -72,7 +74,7 @@ class Runs extends Command
 
 
         $this->response->addContent(new Rows(Processor::create($runs)->map(
-            function (Run $run) use ($compare, $time, $tags, $tagGroupTags) {
+            function (Run $run) use ($compare, $time, $tags, $tagGroupTags, $hog) {
                 $compare->runs = $run->id;
                 $row = array();
 
@@ -81,6 +83,10 @@ class Runs extends Command
 
                 $compare->isInclusive = true;
                 $row['Inclusive'] = new Anchor('Inclusive', $this->io->makeAnchor($compare));
+
+                $hog->runId = $run->id;
+                $row['Wall Time Hogs'] = new Anchor('Wall Time Hogs', $this->io->makeAnchor($hog));
+
                 $row['Time'] = $time->date("Y-m-d H:i:s", $run->ut);
                 $rowTags = array();
                 if (isset($tagGroupTags[$run->tagGroupId])) {

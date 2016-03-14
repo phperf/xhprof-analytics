@@ -3,6 +3,7 @@ namespace  Phperf\Xhprof\Command\Ui;
 
 use Phperf\Xhprof\Command\Compare;
 use Phperf\Xhprof\Command\CreateProject;
+use Phperf\Xhprof\Command\Hog;
 use Phperf\Xhprof\Command\Runs;
 use Phperf\Xhprof\Service\ProfilingClient;
 use Yaoi\Cli\Option;
@@ -31,6 +32,7 @@ class Index extends Command
             ->setIsUnnamed()
             ->addToEnum('')
             ->addToEnum(Runs::definition())
+            ->addToEnum(Hog::definition())
             ->addToEnum(Compare::definition())
             ->addToEnum(CreateProject::definition());
 
