@@ -6,6 +6,8 @@ use Phperf\Xhprof\Entity\RelatedStat;
 use Phperf\Xhprof\Entity\Run;
 use Phperf\Xhprof\Entity\Stat;
 use Phperf\Xhprof\Entity\SymbolStat;
+use Phperf\Xhprof\Entity\TempRun;
+use Phperf\Xhprof\Entity\TempSymbolStat;
 use Yaoi\BaseClass;
 use Yaoi\Database;
 use Yaoi\Sql\Raw;
@@ -16,12 +18,12 @@ use Yaoi\Sql\Symbol;
 class MergeRunSymbolStat extends BaseClass
 {
 
-    /** @var  Run */
+    /** @var  TempRun */
     private $source;
     /** @var  Run[] */
     private $destinations;
 
-    public function __construct(Run $source, $destinations)
+    public function __construct(TempRun $source, $destinations)
     {
         $this->source = $source;
         $this->destinations = $destinations;
@@ -32,8 +34,8 @@ class MergeRunSymbolStat extends BaseClass
         //SELECT rows.symbol_id,run_ids.run_id, rows.memory_usage FROM (select * from phperf_xhprof_symbol_stat WHERE run_id = 1 LIMIT 10) as rows
         //LEFT JOIN (select 2 AS run_id UNION ALL select 3 UNION ALL select 4) AS run_ids ON 1;
         return Database::getInstance()->select()
-            ->from('?', $this->getTable())
-            ->where('? = ?', $this->getColumns()->runId, $this->source->id);
+            ->from('?', $this->getTempTable())
+            ->where('? = ?', $this->getTempColumns()->runId, $this->source->id);
     }
 
     private function unionRunIdsExpr()
@@ -68,7 +70,7 @@ class MergeRunSymbolStat extends BaseClass
             $expr->select('?', $column);
         }
 
-        $expr->leftJoin('(?) AS run_ids ON 1', $this->unionRunIdsExpr());
+        $expr->leftJoin('? AS run_ids ON 1', $this->unionRunIdsExpr());
         return $expr;
     }
 
@@ -137,6 +139,17 @@ class MergeRunSymbolStat extends BaseClass
     protected function getColumns()
     {
         return SymbolStat::columns();
+    }
+
+    protected function getTempColumns()
+    {
+        return TempSymbolStat::columns();
+
+    }
+
+    protected function getTempTable()
+    {
+        return TempSymbolStat::table();
     }
 
     protected function getTable($alias = null)

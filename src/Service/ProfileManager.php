@@ -5,16 +5,16 @@ namespace Phperf\Xhprof\Service;
 use Phperf\Xhprof\BatchSaver;
 use Phperf\Xhprof\Entity\Aggregate;
 use Phperf\Xhprof\Entity\Project;
-use Phperf\Xhprof\Entity\RelatedStat;
 use Phperf\Xhprof\Entity\Run;
 use Phperf\Xhprof\Entity\Symbol;
-use Phperf\Xhprof\Entity\SymbolStat;
 use Phperf\Xhprof\Entity\TagGroup;
+use Phperf\Xhprof\Entity\TempRelatedStat;
+use Phperf\Xhprof\Entity\TempRun;
+use Phperf\Xhprof\Entity\TempSymbolStat;
 use Phperf\Xhprof\Query\MergeRunRelatedStat;
 use Phperf\Xhprof\Query\MergeRunSymbolStat;
 use Yaoi\Cli\Console;
 use Yaoi\Database;
-use Yaoi\Database\Exception;
 use Yaoi\String\Expression;
 use Yaoi\String\Parser;
 
@@ -50,11 +50,11 @@ class ProfileManager
         return $symbol;
     }
 
-    private function getStat(Symbol $symbol, $exclusive = true)
+    private function getSymbolStat(Symbol $symbol, $exclusive = true)
     {
         $symbolStat = &$this->symbolStats[$exclusive . '_' . $symbol->name];
         if (null === $symbolStat) {
-            $symbolStat = new SymbolStat();
+            $symbolStat = new TempSymbolStat();
             $symbolStat->runId = $this->run->id;
             $symbolStat->symbolId = $symbol->id;
             $symbolStat->isInclusive = !$exclusive;
@@ -70,7 +70,7 @@ class ProfileManager
     {
         $relatedStat = &$this->relatedStats[$parent->name . '==>' . $child->name];
         if (null === $relatedStat) {
-            $relatedStat = new RelatedStat();
+            $relatedStat = new TempRelatedStat();
             $relatedStat->runId = $this->run->id;
             $relatedStat->parentSymbolId = $parent->id;
             $relatedStat->childSymbolId = $child->id;
@@ -82,7 +82,7 @@ class ProfileManager
 
     public $lastSample;
 
-    public function addRun($xhprofData, Run $run = null)
+    public function addRun($xhprofData, TempRun $run = null)
     {
         if (!$xhprofData) {
             return;
@@ -91,7 +91,7 @@ class ProfileManager
         //Database::getInstance()->log(new Log('stdout'));
 
         if (null === $run) {
-            $run = new Run();
+            $run = new TempRun();
             $run->ut = time();
         }
         $this->run = $run;
@@ -99,9 +99,9 @@ class ProfileManager
         $run->addXhSample($xhprofData['main()']);
         $run->save();
 
-        $this->getStat($this->getSymbol('main()'), false)->addXhSample($xhprofData['main()']);
+        $this->getSymbolStat($this->getSymbol('main()'), false)->addXhSample($xhprofData['main()']);
 
-        $totalInclusive = $this->getStat($this->getSymbol('TOTAL'), false);
+        $totalInclusive = $this->getSymbolStat($this->getSymbol('TOTAL'), false);
         foreach ($xhprofData as $key => $value) {
             if ('main()' === $key) {
                 continue;
@@ -119,12 +119,15 @@ class ProfileManager
 
             $this->getRelatedStat($parentSymbol, $childSymbol)->addXhSample($value);
 
-            $this->getStat($parentSymbol)->subXhSample($value);
-            $this->getStat($childSymbol)->addXhSample($value);
-            $this->getStat($childSymbol, false)->addXhSample($value);
+            $this->getSymbolStat($parentSymbol)->subXhSample($value);
+            $this->getSymbolStat($childSymbol)->addXhSample($value);
+            $this->getSymbolStat($childSymbol, false)->addXhSample($value);
 
             unset($parentSymbol, $childSymbol);
         }
+
+        $run->calls += $totalInclusive->calls;
+        $run->save();
 
         //$batchSaver->flush();
 
@@ -236,6 +239,8 @@ class ProfileManager
         if (!$exist) {
             $aggregateRun = new Run();
             $aggregateRun->ut = $startUt;
+            $aggregateRun->tagGroupId = $tagGroupId;
+            $aggregateRun->projectId = null; // TODO properize
             $aggregateRun->save();
             $aggregate->runId = $aggregateRun->id;
             $aggregate->save();
@@ -246,17 +251,18 @@ class ProfileManager
         return $aggregateRun;
     }
 
-    public function addToAggregates(Run $run)
+    public function addToAggregates(TempRun $run)
     {
         $time = $run->ut; // TODO process timezone
         $dates = array(
-            Aggregate::PERIOD_MINUTE => 60 * (int)($time / 60),
-            Aggregate::PERIOD_HOUR => 3600 * (int)($time / 3600),
+            //Aggregate::PERIOD_MINUTE => 60 * (int)($time / 60),
+            //Aggregate::PERIOD_HOUR => 3600 * (int)($time / 3600),
             Aggregate::PERIOD_DAY => strtotime('today 00:00:00', $time),
-            Aggregate::PERIOD_WEEK => strtotime('monday this week 00:00:00', $time),
-            Aggregate::PERIOD_MONTH => strtotime('first day of this month 00:00:00', $time),
+            //Aggregate::PERIOD_WEEK => strtotime('monday this week 00:00:00', $time),
+            //Aggregate::PERIOD_MONTH => strtotime('first day of this month 00:00:00', $time),
         );
 
+        /** @var Run[] $destinations */
         $destinations = array();
 
         foreach ($dates as $period => $startUt) {
@@ -278,6 +284,17 @@ class ProfileManager
         Database::getInstance()->query($mergeSymbolStat->build());
         $mergeRelatedStat = new MergeRunRelatedStat($run, $destinations);
         Database::getInstance()->query($mergeRelatedStat->build());
+
+        foreach ($destinations as $destination) {
+            $destination->wallTime += $run->wallTime;
+            $destination->cpu += $run->cpu;
+            $destination->calls += $run->calls;
+            $destination->runs += $run->runs;
+            $destination->memoryUsage = max($run->memoryUsage, $destination->memoryUsage);
+            $destination->peakMemoryUsage = max($run->peakMemoryUsage, $destination->peakMemoryUsage);
+
+            $destination->save();
+        }
 
     }
 

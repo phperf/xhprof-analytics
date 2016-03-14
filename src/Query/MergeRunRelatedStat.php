@@ -4,6 +4,7 @@ namespace Phperf\Xhprof\Query;
 
 
 use Phperf\Xhprof\Entity\RelatedStat;
+use Phperf\Xhprof\Entity\TempRelatedStat;
 use Yaoi\Database\Definition\Column;
 use Yaoi\Sql\SimpleExpression;
 use Yaoi\Sql\Symbol;
@@ -19,6 +20,18 @@ class MergeRunRelatedStat extends MergeRunSymbolStat
     {
         return RelatedStat::columns();
     }
+
+    protected function getTempColumns()
+    {
+        return TempRelatedStat::columns();
+
+    }
+
+    protected function getTempTable()
+    {
+        return TempRelatedStat::table();
+    }
+
 
     /**
      * @param SimpleExpression $columnsExpr

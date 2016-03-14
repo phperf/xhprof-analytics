@@ -33,7 +33,6 @@ class Project extends Entity
      */
     static function setUpTable(\Yaoi\Database\Definition\Table $table, $columns)
     {
-        $table->setSchemaName('phperf_xhprof_project');
     }
 
 }

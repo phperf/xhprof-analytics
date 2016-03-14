@@ -4,22 +4,16 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "5a9d56adbf06f890229c75fa13d13e8d",
-    "content-hash": "f18dcf3adf2832bce257b55144c4a1e1",
+    "hash": "6e7903091d5359138641dfa98df2dffa",
+    "content-hash": "dcdb115588a8509f8da60cdb35a8885c",
     "packages": [
         {
             "name": "php-yaoi/php-yaoi",
             "version": "dev-dirty",
             "source": {
                 "type": "git",
-                "url": "https://github.com/php-yaoi/php-yaoi.git",
-                "reference": "e1e822b4a46b5a4caecc27e45cdd8e9ee293b511"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/php-yaoi/php-yaoi/zipball/e1e822b4a46b5a4caecc27e45cdd8e9ee293b511",
-                "reference": "e1e822b4a46b5a4caecc27e45cdd8e9ee293b511",
-                "shasum": ""
+                "url": "git@bitbucket.org:vearutop/php-yaoi.git",
+                "reference": "11e6b40bdd133eeaaa1efe9076af7e7ca8dfd846"
             },
             "require": {
                 "php": ">=5.3.0"
@@ -40,7 +34,11 @@
                     "Yaoi\\": "src/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "autoload-dev": {
+                "psr-4": {
+                    "YaoiTests\\": "tests/src/"
+                }
+            },
             "license": [
                 "MIT"
             ],
@@ -56,7 +54,7 @@
             "keywords": [
                 "framework"
             ],
-            "time": "2016-02-23 16:37:34"
+            "time": "2016-03-14 05:56:46"
         },
         {
             "name": "phperf/percentiller",
