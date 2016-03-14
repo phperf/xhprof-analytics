@@ -11,6 +11,7 @@ use Phperf\Xhprof\Entity\Symbol;
 use Phperf\Xhprof\Entity\SymbolStat;
 use Phperf\Xhprof\Entity\Tag;
 use Phperf\Xhprof\Entity\TagGroup;
+use Phperf\Xhprof\Entity\TempRelatedStat;
 use Phperf\Xhprof\Entity\TempRun;
 use Phperf\Xhprof\Entity\TempSymbolStat;
 use Yaoi\Command;
@@ -46,7 +47,7 @@ class Migrate extends Command
             TagGroup::table(),
             TempRun::table(),
             TempSymbolStat::table(),
-            TempSymbolStat::table()
+            TempRelatedStat::table()
         );
 
         $log = new Log('colored-stdout');

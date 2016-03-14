@@ -10,7 +10,6 @@ class ProfilingClient
         if (self::$started) {
             self::$started->tags[$name] = $value;
         }
-        var_dump(self::$started);
     }
 
     private static $projectName;
@@ -58,16 +57,15 @@ class ProfilingClient
     {
         $profileManager = new ProfileManager();
         $run = $profileManager->addRun($data);
-        var_dump($run);
         if (self::$projectName) {
             $run->setProjectByName(self::$projectName);
         }
         if ($this->tags) {
-            var_dump($this->tags);
             $run->setTagsByValues($this->tags);
         }
         $profileManager->saveStats();
         $profileManager->addToAggregates($run);
+        $run->delete();
     }
 
     private function getSaveCallback()
@@ -80,10 +78,9 @@ class ProfilingClient
                 $data = xhprof_disable();
 
                 xhprof_enable(XHPROF_FLAGS_CPU | XHPROF_FLAGS_MEMORY);
-                var_dump($this->tags);
                 $this->stopAndSave($data);
 
-                $this->tags = array('saving' => null);
+                $this->tags = array('saving' => null/*, 'simple_cast' => null*/);
                 $data = xhprof_disable();
                 $this->stopAndSave($data);
             }

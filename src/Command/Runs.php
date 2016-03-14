@@ -41,11 +41,14 @@ class Runs extends Command
         }
 
         $tagIds = array();
-        $tagGroups = TagGroup::statement()
-            ->where('? IN (?)', TagGroup::columns()->id, $tagGroupIds)
-            ->query()
-            ->fetchAll(TagGroup::columns()->id, TagGroup::columns()->tagIds);
+        $tagGroups = array();
+        if ($tagGroupIds) {
+            $tagGroups = TagGroup::statement()
+                ->where('? IN (?)', TagGroup::columns()->id, $tagGroupIds)
+                ->query()
+                ->fetchAll(TagGroup::columns()->id, TagGroup::columns()->tagIds);
 
+        }
         $tagGroupTags = array();
 
         foreach ($tagGroups as $tagGroupId => $tagGroupTagIds) {
@@ -81,6 +84,11 @@ class Runs extends Command
                     }
                 }
                 $row['Tags'] = implode(', ', $rowTags);
+
+                $row['Wall Time'] = $run->wallTime / 1000;
+                $row['CPU Time'] = $run->cpu;
+                $row['Function Calls'] = $run->calls;
+                $row['Runs'] = $run->runs;
                 return $row;
             }
         )));
