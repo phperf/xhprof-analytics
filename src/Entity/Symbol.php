@@ -12,12 +12,13 @@ class Symbol extends Entity
 
     static function setUpColumns($columns)
     {
-        $columns->id = Column::AUTO_ID;
+        $columns->id = Column::INTEGER + Column::UNSIGNED;
         $columns->name = Column::create(Column::STRING)->setUnique();
     }
 
     static function setUpTable(\Yaoi\Database\Definition\Table $table, $columns)
     {
+        $table->setPrimaryKey($columns->id);
     }
 
 }

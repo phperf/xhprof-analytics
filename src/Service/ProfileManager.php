@@ -34,6 +34,7 @@ class ProfileManager
     public $runInstance;
     private $index = 0;
 
+    /** @var Symbol[] */
     private $symbols = array();
     private $symbolStats = array();
     private $run;
@@ -43,11 +44,30 @@ class ProfileManager
         $symbol = &$this->symbols[$name];
         if (null === $symbol) {
             $symbol = new Symbol();
+            $symbol->id = crc32($name);
             $symbol->name = $name;
-            $symbol->findOrSave();
+            //$symbol->findOrSave();
         }
 
         return $symbol;
+    }
+
+    private function saveSymbols() // TODO collision detection/prevention
+    {
+        $ids = array();
+        foreach ($this->symbols as $symbol) {
+            $ids[] = $symbol->id;
+        }
+        $count = (int)Symbol::statement()
+            ->select('COUNT(1) AS c')
+            ->where('? IN (?)', Symbol::columns()->id, $ids)->query()
+            ->fetchRow('c');
+
+        if ($count !== count($ids)) {
+            foreach ($this->symbols as $symbol) {
+                $symbol->findOrSave();
+            }
+        }
     }
 
     private function getSymbolStat(Symbol $symbol, $exclusive = true)
@@ -224,6 +244,7 @@ class ProfileManager
 
     public function saveStats()
     {
+        $this->saveSymbols();
         $this->saveSymbolStats();
         $this->saveRelatedStats();
     }
