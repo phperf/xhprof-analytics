@@ -61,6 +61,10 @@ class WallTimeHog
             if ($trace->symbol === 'TOTAL') {
                 continue;
             }
+            if ($trace->symbol !== 'main()') {
+                continue;
+            }
+
             //var_dump($trace);
             //$this->topChildren($stat->symbolId, $this->threshold * $stat->wallTime, $trace);
             $this->topChildren($stat->symbolId, $this->threshold * $this->run->wallTime, $trace);

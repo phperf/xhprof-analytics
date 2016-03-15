@@ -8,7 +8,10 @@ use Phperf\Xhprof\Service\Trace;
 use Phperf\Xhprof\Service\WallTimeHog;
 use Yaoi\Command;
 use Yaoi\Command\Definition;
-use Yaoi\Io\Content\Info;
+use Yaoi\Io\Content\Anchor;
+use Yaoi\Io\Content\Badge;
+use Yaoi\Io\Content\ItemList;
+use Yaoi\Io\Content\Multiple;
 
 class Hog extends Command
 {
@@ -28,16 +31,48 @@ class Hog extends Command
             $this->echoTrace($trace);
         }
 
+        //var_dump($this->flatTraces);
+
+        $compare = Compare::createState();
+        foreach ($this->flatTraces as $flatTrace) {
+            array_shift($flatTrace);
+
+            $list = new ItemList();
+            foreach ($flatTrace as $data) {
+                $compare->symbol = $data[0];
+                $compare->runs = array($this->runId);
+
+
+                $list->addItem(new Anchor(
+                    Multiple::create()
+                        ->addItem($data[0])
+                        ->addItem(' ')
+                        ->addItem(Badge::create(round(100 * $data[1], 2))),
+                    $this->io->makeAnchor($compare))
+                );
+            }
+            $this->response->addContent($list);
+        }
+
+
         //$this->response->addContent('<pre>' . print_r($traces, 1) . '</pre>');
     }
 
 
-    private function echoTrace(Trace $trace, $padding = '') {
-        $this->response->addContent(new Info($padding . ' '. $trace->symbol . ' ' . round(100 * $trace->wallTime, 2) . '%'));
-        foreach ($trace->children as $child) {
-            $this->echoTrace($child, $padding . '-');
+    private $flatTraces = array();
+
+    private function echoTrace(Trace $trace, $padding = '', $thisFlat = array()) {
+        //$this->response->addContent(new Info($padding . ' '. $trace->symbol . ' ' . round(100 * $trace->wallTime, 2) . '%'));
+
+        $thisFlat []= array($trace->symbol, $trace->wallTime);
+        if (!$trace->children) {
+            $this->flatTraces []= $thisFlat;
         }
-        //$this->response->addContent('<hr />');
+        else {
+            foreach ($trace->children as $child) {
+                $this->echoTrace($child, $padding . '-', $thisFlat);
+            }
+        }
     }
 
     static function setUpDefinition(Definition $definition, $options)
