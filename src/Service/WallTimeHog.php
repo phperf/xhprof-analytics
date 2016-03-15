@@ -11,7 +11,7 @@ use Yaoi\Database;
 
 class WallTimeHog
 {
-    private $threshold = 0.2;
+    private $threshold = 0.1;
 
     /** @var Run */
     private $run;
@@ -55,9 +55,12 @@ class WallTimeHog
             if (isset($this->symbolsFound[$stat->symbolId])) {
                 continue;
             }
-
             $this->symbolsFound[$stat->symbolId] = 1;
+
             $trace = new Trace(Symbol::findByPrimaryKey($stat->symbolId)->name, $stat->wallTime / $this->run->wallTime);
+            if ($trace->symbol === 'TOTAL') {
+                continue;
+            }
             //var_dump($trace);
             //$this->topChildren($stat->symbolId, $this->threshold * $stat->wallTime, $trace);
             $this->topChildren($stat->symbolId, $this->threshold * $this->run->wallTime, $trace);
@@ -81,9 +84,9 @@ class WallTimeHog
             ->fetchAll();
 
         foreach ($topChildren as $stat) {
-            if (isset($this->symbolsFound[$stat->childSymbolId])) {
-                continue;
-            }
+            //if (isset($this->symbolsFound[$stat->childSymbolId])) {
+            //    continue;
+            //}
             $this->symbolsFound[$stat->childSymbolId] = 1;
 
             $childTrace = new Trace(Symbol::findByPrimaryKey($stat->childSymbolId)->name, $stat->wallTime / $this->run->wallTime);
