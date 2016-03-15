@@ -19,7 +19,7 @@ class ProfilingClient
     }
 
     /** @var self */
-    private static $started;
+    public static $started;
 
     public function cancel()
     {
@@ -53,7 +53,7 @@ class ProfilingClient
     }
 
 
-    private function stopAndSave($data)
+    public function stopAndSave($data)
     {
         $profileManager = new ProfileManager();
         $run = $profileManager->addRun($data);

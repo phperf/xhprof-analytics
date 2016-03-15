@@ -6,6 +6,7 @@ namespace Phperf\Xhprof\Command;
 use Phperf\Xhprof\Entity\Run;
 use Phperf\Xhprof\Entity\Tag;
 use Phperf\Xhprof\Entity\TagGroup;
+use Phperf\Xhprof\Ui\Formatter;
 use Yaoi\Command;
 use Yaoi\Command\Definition;
 use Yaoi\Database\Definition\Column;
@@ -96,7 +97,7 @@ class Runs extends Command
                 }
                 $row['Tags'] = implode(', ', $rowTags);
 
-                $row['Wall Time'] = $run->wallTime / 1000;
+                $row['Avg Wall Time (s)'] = Formatter::timeFromNs(($run->wallTime / 1000000) / $run->runs);
                 $row['CPU Time'] = $run->cpu;
                 $row['Function Calls'] = $run->calls;
                 $row['Runs'] = $run->runs;
