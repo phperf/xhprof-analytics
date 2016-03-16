@@ -6,6 +6,7 @@ namespace Phperf\Xhprof\Command;
 use Phperf\Xhprof\Entity\Run;
 use Phperf\Xhprof\Entity\Tag;
 use Phperf\Xhprof\Entity\TagGroup;
+use Phperf\Xhprof\Ui\Formatter;
 use Yaoi\Command;
 use Yaoi\Command\Definition;
 use Yaoi\Database\Definition\Column;
@@ -34,6 +35,8 @@ class Runs extends Command
 
         $compare = Compare::createState();
         $time = TimeMachine::getInstance();
+
+        $hog = Hog::createState();
 
         $tagGroupIds = array();
         foreach ($runs as $run) {
@@ -72,7 +75,7 @@ class Runs extends Command
 
 
         $this->response->addContent(new Rows(Processor::create($runs)->map(
-            function (Run $run) use ($compare, $time, $tags, $tagGroupTags) {
+            function (Run $run) use ($compare, $time, $tags, $tagGroupTags, $hog) {
                 $compare->runs = $run->id;
                 $row = array();
 
@@ -81,16 +84,22 @@ class Runs extends Command
 
                 $compare->isInclusive = true;
                 $row['Inclusive'] = new Anchor('Inclusive', $this->io->makeAnchor($compare));
+
+                $hog->runId = $run->id;
+                $row['Wall Time Hogs'] = new Anchor('Wall Time Hogs', $this->io->makeAnchor($hog));
+
                 $row['Time'] = $time->date("Y-m-d H:i:s", $run->ut);
                 $rowTags = array();
                 if (isset($tagGroupTags[$run->tagGroupId])) {
                     foreach ($tagGroupTags[$run->tagGroupId] as $tagId) {
-                        $rowTags []= $tags[$tagId]->text;
+                        $rowTags [] = $tags[$tagId]->text;
                     }
                 }
                 $row['Tags'] = implode(', ', $rowTags);
 
-                $row['Wall Time'] = $run->wallTime / 1000;
+                $row['Avg Wall Time (s)'] = Formatter::timeFromNs(
+                    ($run->wallTime / 1000000)
+                    / ($run->runs ? $run->runs : 1));
                 $row['CPU Time'] = $run->cpu;
                 $row['Function Calls'] = $run->calls;
                 $row['Runs'] = $run->runs;

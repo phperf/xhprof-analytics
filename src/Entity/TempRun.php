@@ -12,4 +12,21 @@ class TempRun extends Run
         return parent::delete();
     }
 
+    /**
+     * @return TempSymbolStat
+     */
+    public function symbolStat()
+    {
+        return new TempSymbolStat();
+    }
+
+    /**
+     * @return TempRelatedStat
+     */
+    public function relatedStat()
+    {
+        return new TempRelatedStat();
+    }
+
+
 }

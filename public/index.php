@@ -6,7 +6,11 @@ use Phperf\Xhprof\Command\Ui\Index;
 use Phperf\Xhprof\Service\ProfilingClient;
 use Phperf\Xhprof\Ui\Runner;
 
-xhprof_enable(XHPROF_FLAGS_CPU | XHPROF_FLAGS_MEMORY);
+if (extension_loaded('tideways')) {
+    tideways_enable(TIDEWAYS_FLAGS_CPU | TIDEWAYS_FLAGS_MEMORY);
+} elseif (extension_loaded('xhprof')) {
+    xhprof_enable(XHPROF_FLAGS_CPU | XHPROF_FLAGS_MEMORY);
+}
 
 require_once __DIR__ . '/../vendor/autoload.php';
 require_once __DIR__ . '/../env/conf.php';

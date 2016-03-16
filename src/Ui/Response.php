@@ -3,7 +3,10 @@
 namespace Phperf\Xhprof\Ui;
 
 use Yaoi\Io\Content\Anchor;
+use Yaoi\Io\Content\Badge;
 use Yaoi\Io\Content\Error;
+use Yaoi\Io\Content\ItemList;
+use Yaoi\Io\Content\Multiple;
 use Yaoi\Io\Content\Rows;
 use Yaoi\Io\Content\SubContent;
 use Yaoi\Io\Content\Success;
@@ -43,28 +46,48 @@ class Response extends \Yaoi\Io\Response implements Renderer
                 $table->addClass('table table-striped');
                 foreach ($message->getIterator() as $item) {
                     foreach ($item as $key => $value) {
-                        $item [$key]= $this->renderMessage($value);
+                        $item [$key] = $this->renderMessage($value);
                     }
                     $table->addRow($item);
                 }
                 return (string)$table;
 
             case $message instanceof Error:
-                return '<div role="alert" class="alert alert-danger"><strong>OOPS!</strong> ' . $message->value . '</div>';
+                return '<div role="alert" class="alert alert-danger"><strong>OOPS!</strong> '
+                . $this->renderMessage($message->value) . '</div>';
 
             case $message instanceof Success:
-                return '<div role="alert" class="alert alert-success">' . $message->value . '</div>';
+                return '<div role="alert" class="alert alert-success">' . $this->renderMessage($message->value)
+                . '</div>';
 
             case $message instanceof Anchor:
                 return '<a href="' . $message->anchor . '">'
-                . $message->value . '</a>';
+                . $this->renderMessage($message->value) . '</a>';
+
+            case $message instanceof Multiple:
+                $ret = '';
+                foreach ($message->items as $item) {
+                    $ret .= $this->renderMessage($item);
+                }
+            return $ret;
+
+            case $message instanceof Badge:
+                return '<span clwass="badge" class="label label-default">' . $this->renderMessage($message->value) . '</span>';
 
             case $message instanceof Text:
-                return '<div class="text ' . $message->type . '">' . $message->value . '</div>';
+                return '<div class="text ' . $message->type . '">' . $this->renderMessage($message->value) . '</div>';
+
+            case $message instanceof ItemList:
+                $ret = '<ul class="list-group">';
+                foreach ($message->items as $item) {
+                    $ret .= '<li class="list-group-item">' . $this->renderMessage($item) . '</li>';
+                }
+                $ret .= '</ul>';
+                return $ret;
 
 
             default:
-                return '<div>' . $message . '</div>';
+                return $message;
         }
     }
 

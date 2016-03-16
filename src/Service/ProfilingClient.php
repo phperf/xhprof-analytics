@@ -19,7 +19,7 @@ class ProfilingClient
     }
 
     /** @var self */
-    private static $started;
+    public static $started;
 
     public function cancel()
     {
@@ -53,7 +53,7 @@ class ProfilingClient
     }
 
 
-    private function stopAndSave($data)
+    public function stopAndSave($data)
     {
         $profileManager = new ProfileManager();
         $run = $profileManager->addRun($data);
@@ -75,13 +75,30 @@ class ProfilingClient
         return function() {
 
             try {
-                $data = xhprof_disable();
+                $data = array();
+                if (extension_loaded('tideways')) {
+                    $data = tideways_disable();
+                } elseif (extension_loaded('xhprof')) {
+                    $data = xhprof_disable();
+                }
 
-                xhprof_enable(XHPROF_FLAGS_CPU | XHPROF_FLAGS_MEMORY);
+                if (extension_loaded('tideways')) {
+                    tideways_enable(TIDEWAYS_FLAGS_CPU | TIDEWAYS_FLAGS_MEMORY);
+                } elseif (extension_loaded('xhprof')) {
+                    xhprof_enable(XHPROF_FLAGS_CPU | XHPROF_FLAGS_MEMORY);
+                }
+
                 $this->stopAndSave($data);
 
                 $this->tags = array('saving' => null/*, 'simple_cast' => null*/);
-                $data = xhprof_disable();
+
+                $data = array();
+                if (extension_loaded('tideways')) {
+                    $data = tideways_disable();
+                } elseif (extension_loaded('xhprof')) {
+                    $data = xhprof_disable();
+                }
+
                 $this->stopAndSave($data);
             }
             catch (Exception $exception) {
