@@ -1,4 +1,5 @@
 {
+  "name": "phperf/xhprof-analytics",
   "repositories": [
     {
       "url": "https://github.com/vearutop/archive-tar.git",
