@@ -57,7 +57,7 @@ class WallTimeHog
             }
             $this->symbolsFound[$stat->symbolId] = 1;
 
-            $trace = new Trace(Symbol::findByPrimaryKey($stat->symbolId)->name, $stat->wallTime / $this->run->wallTime);
+            $trace = new Trace(Symbol::findByPrimaryKey($stat->symbolId)->name, $stat);
             if ($trace->symbol === 'TOTAL') {
                 continue;
             }
@@ -93,7 +93,7 @@ class WallTimeHog
             //}
             $this->symbolsFound[$stat->childSymbolId] = 1;
 
-            $childTrace = new Trace(Symbol::findByPrimaryKey($stat->childSymbolId)->name, $stat->wallTime / $this->run->wallTime);
+            $childTrace = new Trace(Symbol::findByPrimaryKey($stat->childSymbolId)->name, $stat);
             //var_dump($childTrace);
             $trace->children[] = $childTrace;
             //$this->topChildren($stat->childSymbolId, $this->threshold * $stat->wallTime, $childTrace);

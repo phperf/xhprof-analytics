@@ -92,12 +92,14 @@ class Runs extends Command
                 $rowTags = array();
                 if (isset($tagGroupTags[$run->tagGroupId])) {
                     foreach ($tagGroupTags[$run->tagGroupId] as $tagId) {
-                        $rowTags []= $tags[$tagId]->text;
+                        $rowTags [] = $tags[$tagId]->text;
                     }
                 }
                 $row['Tags'] = implode(', ', $rowTags);
 
-                $row['Avg Wall Time (s)'] = Formatter::timeFromNs(($run->wallTime / 1000000) / $run->runs);
+                $row['Avg Wall Time (s)'] = Formatter::timeFromNs(
+                    ($run->wallTime / 1000000)
+                    / ($run->runs ? $run->runs : 1));
                 $row['CPU Time'] = $run->cpu;
                 $row['Function Calls'] = $run->calls;
                 $row['Runs'] = $run->runs;

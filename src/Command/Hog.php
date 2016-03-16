@@ -6,6 +6,7 @@ use Phperf\Xhprof\Entity\Exception;
 use Phperf\Xhprof\Entity\Run;
 use Phperf\Xhprof\Service\Trace;
 use Phperf\Xhprof\Service\WallTimeHog;
+use Phperf\Xhprof\Ui\Formatter;
 use Yaoi\Command;
 use Yaoi\Command\Definition;
 use Yaoi\Io\Content\Anchor;
@@ -38,17 +39,22 @@ class Hog extends Command
             array_shift($flatTrace);
 
             $list = new ItemList();
-            foreach ($flatTrace as $data) {
-                $compare->symbol = $data[0];
+            foreach ($flatTrace as $trace) {
+                $compare->symbol = $trace->symbol;
                 $compare->runs = array($this->runId);
 
 
-                $list->addItem(new Anchor(
+                $list->addItem(
                     Multiple::create()
-                        ->addItem($data[0])
+                        ->addItem(new Anchor($trace->symbol, $this->io->makeAnchor($compare)))
                         ->addItem(' ')
-                        ->addItem(Badge::create(round(100 * $data[1], 2))),
-                    $this->io->makeAnchor($compare))
+                        ->addItem(Badge::create('wt: ' . round(100 * ($trace->stat->wallTime / $run->wallTime), 2) . '%'))
+                        ->addItem(' ')
+                        ->addItem(Badge::create('cpu: ' . round(100 * ($trace->stat->cpu / $run->cpu), 2) . '%'))
+                        ->addItem(' ')
+                        ->addItem(Badge::create('calls: ' . $trace->stat->calls))
+                        ->addItem(' ')
+                        ->addItem(Badge::create('mu: ' . Formatter::bytes($trace->stat->memoryUsage)))
                 );
             }
             $this->response->addContent($list);
@@ -59,12 +65,13 @@ class Hog extends Command
     }
 
 
+    /** @var Trace[][] */
     private $flatTraces = array();
 
     private function echoTrace(Trace $trace, $padding = '', $thisFlat = array()) {
         //$this->response->addContent(new Info($padding . ' '. $trace->symbol . ' ' . round(100 * $trace->wallTime, 2) . '%'));
 
-        $thisFlat []= array($trace->symbol, $trace->wallTime);
+        $thisFlat []= $trace;
         if (!$trace->children) {
             $this->flatTraces []= $thisFlat;
         }

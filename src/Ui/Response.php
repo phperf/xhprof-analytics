@@ -72,7 +72,7 @@ class Response extends \Yaoi\Io\Response implements Renderer
             return $ret;
 
             case $message instanceof Badge:
-                return '<span class="badge">' . $this->renderMessage($message->value) . '</span>';
+                return '<span clwass="badge" class="label label-default">' . $this->renderMessage($message->value) . '</span>';
 
             case $message instanceof Text:
                 return '<div class="text ' . $message->type . '">' . $this->renderMessage($message->value) . '</div>';

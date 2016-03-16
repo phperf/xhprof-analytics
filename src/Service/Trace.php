@@ -6,16 +6,16 @@ use Phperf\Xhprof\Entity\Stat;
 
 class Trace
 {
-    public function __construct($symbol, $wallTime)
+    public function __construct($symbol, $stat)
     {
         $this->symbol = $symbol;
-        $this->wallTime = $wallTime;
+        $this->stat = $stat;
     }
 
     /**
      * @var Stat
      */
-    public $wallTime;
+    public $stat;
 
     public $symbol;
 
