@@ -1,6 +1,6 @@
 <?php
 
-namespace Phperf\Xhprof\Html\View;
+namespace Yaoi\Twbs;
 
 
 use Yaoi\View\Hardcoded;
@@ -14,7 +14,7 @@ class Layout extends Hardcoded
         return false;
     }
 
-    public $title = 'XHPROF Analytics';
+    public $title = 'ACME labs';
 
     public function setTitle($title) {
         $this->title = $title;

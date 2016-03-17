@@ -45,6 +45,9 @@ class ProfilingClient
         register_shutdown_function(function() use ($started) {
             register_shutdown_function(function() use ($started) {
                 if ($started->saveCallback) {
+                    if (function_exists('fastcgi_finish_request')) {
+                        fastcgi_finish_request();
+                    }
                     $started->saveCallback->__invoke();
                 }
             });

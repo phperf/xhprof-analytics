@@ -8,7 +8,7 @@
 namespace Phperf\Xhprof\Ui\Command;
 
 use Yaoi\Command\Io\Io;
-use Phperf\Xhprof\Ui\Response;
+use Yaoi\Twbs\Response;
 use Yaoi\BaseClass;
 use Yaoi\Command\Exception;
 use Yaoi\Command;

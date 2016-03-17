@@ -4,7 +4,7 @@ namespace Phperf\Xhprof;
 
 use Phperf\Xhprof\Command\Ui\Index;
 use Phperf\Xhprof\Service\ProfilingClient;
-use Phperf\Xhprof\Ui\Runner;
+use Yaoi\Twbs\Runner;
 
 if (extension_loaded('tideways')) {
     tideways_enable(TIDEWAYS_FLAGS_CPU | TIDEWAYS_FLAGS_MEMORY);

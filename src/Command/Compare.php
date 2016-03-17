@@ -2,7 +2,7 @@
 
 namespace Phperf\Xhprof\Command;
 
-use Phperf\Xhprof\Html\View\Layout;
+use Yaoi\Twbs\Layout;
 use Yaoi\Command;
 use Yaoi\Command\Definition;
 use Yaoi\Command\Option;

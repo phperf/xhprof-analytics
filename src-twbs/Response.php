@@ -1,6 +1,6 @@
 <?php
 
-namespace Phperf\Xhprof\Ui;
+namespace Yaoi\Twbs;
 
 use Yaoi\Io\Content\Anchor;
 use Yaoi\Io\Content\Badge;

@@ -4,7 +4,7 @@ namespace Phperf\Xhprof\Html;
 
 
 use Phperf\Xhprof\Html\View\Error;
-use Phperf\Xhprof\Html\View\Layout;
+use Yaoi\Twbs\Layout;
 use Phperf\Xhprof\Html\View\Message;
 use Phperf\Xhprof\Html\View\Success;
 use Yaoi\Command;

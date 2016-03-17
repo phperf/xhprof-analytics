@@ -17,7 +17,8 @@
   },
   "autoload": {
     "psr-4": {
-      "Phperf\\Xhprof\\": "src/"
+      "Phperf\\Xhprof\\": "src/",
+      "Yaoi\\Twbs\\": "src-twbs/"
     }
   },
   "minimum-stability": "dev",

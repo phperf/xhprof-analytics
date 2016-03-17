@@ -1,13 +1,14 @@
 <?php
 
-namespace Phperf\Xhprof\Ui;
+namespace Yaoi\Twbs;
 
-use Phperf\Xhprof\Html\View\Layout;
+use Yaoi\Twbs\Response;
+use Yaoi\Twbs\Layout;
 use Yaoi\BaseClass;
 use Yaoi\Command;
 use Yaoi\Io\Request;
 
-class Runner extends BaseClass //implements \Yaoi\Command\RunnerContract
+class Runner extends BaseClass
 {
     public static function run(Command\Definition $definition, Request $request = null)
     {
