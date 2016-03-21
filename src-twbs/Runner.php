@@ -22,7 +22,6 @@ class Runner extends BaseClass
         $layout = new Layout();
         $layout->pushMain($response);
 
-
         try {
             $io = new Command\Io($definition, $requestMapper, $response);
             $io->getCommand()->performAction();

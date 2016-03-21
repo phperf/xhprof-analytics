@@ -15,4 +15,15 @@
         </testsuite>
     </testsuites>
 
+    <filter>
+        <whitelist addUncoveredFilesFromWhitelist="true">
+            <directory suffix=".php">./src</directory>
+        </whitelist>
+    </filter>
+    <filter>
+        <whitelist addUncoveredFilesFromWhitelist="true">
+            <directory suffix=".php">./src-twbs</directory>
+        </whitelist>
+    </filter>
+
 </phpunit>

@@ -5,7 +5,9 @@ use Yaoi\Database;
 use Yaoi\Log;
 
 require_once __DIR__ . '/../vendor/autoload.php';
+require_once __DIR__ . '/../env/conf.php';
 
+/*
 $dbFilePath = sys_get_temp_dir() . '/xh-tests.sqlite';
 register_shutdown_function(function()use($dbFilePath) {
     unlink($dbFilePath);
@@ -18,3 +20,4 @@ Entity\Migrations::create()->run(
 );
 
 Database::getInstance()->log(new Log('colored-stdout'));
+*/
