@@ -3,7 +3,7 @@
 namespace Yaoi\Twbs;
 
 use Yaoi\Io\Content\Anchor;
-use Yaoi\Io\Content\Badge;
+use Yaoi\Twbs\Io\Content\Badge;
 use Yaoi\Io\Content\Error;
 use Yaoi\Io\Content\ItemList;
 use Yaoi\Io\Content\Multiple;

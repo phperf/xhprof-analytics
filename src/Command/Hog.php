@@ -10,7 +10,7 @@ use Phperf\Xhprof\Ui\Formatter;
 use Yaoi\Command;
 use Yaoi\Command\Definition;
 use Yaoi\Io\Content\Anchor;
-use Yaoi\Io\Content\Badge;
+use Yaoi\Twbs\Io\Content\Badge;
 use Yaoi\Io\Content\ItemList;
 use Yaoi\Io\Content\Multiple;
 
