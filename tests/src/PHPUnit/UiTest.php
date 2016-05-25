@@ -66,6 +66,9 @@ class UiTest extends \Yaoi\Test\PHPUnit\TestCase
     {
         /** @var Run $run */
         $run = Run::statement()->limit(1)->query()->fetchRow();
+        if (!$run) {
+            $this->fail('Unable to find run');
+        }
         //var_dump($run);
         $hogState = Hog::createState();
         $hogState->runId = $run->id;
